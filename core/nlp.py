@@ -1,11 +1,17 @@
 """Natural language to command string conversion utilities."""
 
 from dataclasses import dataclass
-from typing import Callable, List
+from typing import Callable, List, Tuple
 
 import json
+import math
 import os
 import re
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import make_pipeline
+import joblib
 
 
 @dataclass
@@ -64,6 +70,25 @@ CUSTOM_REGISTRY = IntentRegistry()
 
 _custom_cache: dict[str, str] | None = None
 
+# ML model and training data paths
+MODEL_FILE = os.path.join("models", "intent_classifier.pkl")
+META_FILE = os.path.join("models", "intent_classifier_meta.json")
+TRAINING_DATA_FILE = os.path.join("data", "training_data.json")
+
+# Baseline examples to seed the classifier. These mirror the regex intents.
+DEFAULT_TRAINING_DATA = [
+    {"text": "remind me to buy milk", "command": "remind buy milk"},
+    {"text": "set a reminder for cleaning", "command": "remind cleaning"},
+    {"text": "what's the weather in paris", "command": "weather paris"},
+    {"text": "flip a coin", "command": "game flip"},
+    {"text": "roll a die", "command": "game roll"},
+    {"text": "generate a uuid", "command": "tools uuid"},
+    {"text": "generate a password 16", "command": "tools password 16"},
+    {"text": "are you there", "command": "ping"},
+]
+
+MODEL = None
+
 
 def _load_custom_intents() -> dict[str, str]:
     global _custom_cache
@@ -103,6 +128,30 @@ def add_custom_intent(phrase: str, command: str) -> None:
 
 def get_custom_intents() -> dict[str, str]:
     return _load_custom_intents().copy()
+
+
+def _load_training_data() -> list[dict[str, str]]:
+    """Load user provided corrections from disk."""
+    if not os.path.exists(TRAINING_DATA_FILE):
+        return []
+    try:
+        with open(TRAINING_DATA_FILE, "r", encoding="utf-8") as fh:
+            return json.load(fh)
+    except Exception:
+        return []
+
+
+def _save_training_data(data: list[dict[str, str]]) -> None:
+    os.makedirs(os.path.dirname(TRAINING_DATA_FILE), exist_ok=True)
+    with open(TRAINING_DATA_FILE, "w", encoding="utf-8") as fh:
+        json.dump(data, fh)
+
+
+def record_correction(original: str, corrected: str) -> None:
+    """Persist a user correction for future training."""
+    data = _load_training_data()
+    data.append({"text": preprocess(original), "command": preprocess(corrected)})
+    _save_training_data(data)
 
 
 # Populate registry on import
@@ -151,20 +200,93 @@ def register_default_intents() -> None:
 
 register_default_intents()
 
+_model_data_size: int = 0
+
+
+def _train_model() -> None:
+    """Train classifier from default and user-provided data."""
+    global MODEL, _model_data_size
+    dataset = DEFAULT_TRAINING_DATA + _load_training_data()
+    if not dataset:
+        MODEL = None
+        return
+    texts = [preprocess(d["text"]) for d in dataset]
+    commands = [d["command"] for d in dataset]
+    pipe = make_pipeline(TfidfVectorizer(), LogisticRegression(max_iter=1000))
+    pipe.fit(texts, commands)
+    os.makedirs(os.path.dirname(MODEL_FILE), exist_ok=True)
+    joblib.dump(pipe, MODEL_FILE)
+    with open(META_FILE, "w", encoding="utf-8") as fh:
+        json.dump({"size": len(dataset)}, fh)
+    MODEL = pipe
+    _model_data_size = len(dataset)
+
+
+def load_model() -> None:
+    """Load the saved model or train a new one if needed."""
+    global MODEL, _model_data_size
+    dataset_size = len(DEFAULT_TRAINING_DATA) + len(_load_training_data())
+    if os.path.exists(MODEL_FILE) and os.path.exists(META_FILE):
+        try:
+            with open(META_FILE, "r", encoding="utf-8") as fh:
+                meta = json.load(fh)
+            if meta.get("size") == dataset_size:
+                MODEL = joblib.load(MODEL_FILE)
+                _model_data_size = dataset_size
+                return
+        except Exception:
+            pass
+    _train_model()
+
+
+def classify_intent(text: str) -> Tuple[str, float]:
+    """Return classifier prediction and confidence."""
+    if MODEL is None:
+        load_model()
+    if MODEL is None:
+        return "unknown", 0.0
+    cleaned = preprocess(text)
+    proba = MODEL.predict_proba([cleaned])[0]
+    idx = int(proba.argmax())
+    return MODEL.classes_[idx], float(proba[idx])
+
+
+def regex_fallback(text: str) -> str:
+    """Fallback to regex-based intent matching."""
+    result = CUSTOM_REGISTRY.parse(text)
+    if result != text:
+        return result
+    return REGISTRY.parse(text)
+
+
+def update_model_on_corrections() -> None:
+    """Retrain model if new corrections were recorded."""
+    dataset_size = len(DEFAULT_TRAINING_DATA) + len(_load_training_data())
+    if dataset_size != _model_data_size:
+        _train_model()
+
 
 def normalize_input(text: str) -> str:
-    """Public API used by the dispatcher."""
+    """Public API used by the dispatcher. Uses ML classifier with fallback."""
 
     cleaned = preprocess(text)
-    result = CUSTOM_REGISTRY.parse(cleaned)
-    if result != cleaned:
-        return result
-    return REGISTRY.parse(cleaned)
+    intent, conf = classify_intent(cleaned)
+    if intent != "unknown" and conf >= 0.6:
+        return intent
+    return regex_fallback(cleaned)
 
 
 if __name__ == "__main__":
     # Minimal inline tests for manual execution. These do not replace pytest.
+    load_model()
     assert normalize_input("Remind me to drink") == "remind drink"
     assert normalize_input("  how's the weather in Tokyo?  ") == "weather Tokyo"
     assert normalize_input("Flip a coin!") == "game flip"
+    assert normalize_input("Generate a password of length 16") == "tools password 16"
+
+    original = "Whats weather"
+    corrected = "weather Berlin"
+    record_correction(original, corrected)
+    update_model_on_corrections()
+    assert normalize_input(original) == corrected
     print("All inline NLP tests passed.")
