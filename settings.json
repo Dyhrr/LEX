@@ -1,6 +1,6 @@
 {
   "sarcasm_level": 5,
-  "use_cloud": false,
+  "use_cloud": true,
   "voice_input": true,
   "voice_output": true,
   "tts_engine": "pyttsx3",
