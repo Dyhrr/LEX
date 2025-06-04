@@ -4,11 +4,8 @@ The following command modules contain only placeholder implementations and need 
 
 - commands/collab.py
 - commands/email_summary.py
-- commands/hotkey.py
-- commands/hud.py
 - commands/notify.py
 - commands/proactive.py
 - commands/secdash.py
 - commands/smarthome.py
 - commands/wakeword.py
-- commands/workflow.py
