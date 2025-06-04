@@ -1,7 +1,1 @@
-{
-    "default": [
-        "What do you want now?",
-        "Can we not?",
-        "I'm busy doing nothing."
-    ]
-}
+{ "default": ["What do you want now?", "Can we not?", "I'm busy doing nothing."] }

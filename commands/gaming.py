@@ -1,0 +1,1 @@
+def handle(input_text): return 'gaming response'
