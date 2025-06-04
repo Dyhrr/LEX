@@ -64,7 +64,20 @@ LEX/
 ├── personality/      # Tone files, sass library
 ---
 
-## 🔌 Commands & Plugins
+## 🧩 Commands & Plugins
+
+All plugins live in the `commands/` folder. Any module that exposes a `Command` class with a `trigger` list and an asynchronous `run()` method is picked up automatically by `dispatcher.py`.
+
+```python
+class Command:
+    trigger = ["ping"]
+
+    def __init__(self, context):
+        self.context = context
+
+    async def run(self, args: str) -> str:
+        return "Pong!"
+
 
 All plugins live in the `commands/` folder. The dispatcher scans that directory
 at startup and imports any module exposing a `Command` class. Each command lists
