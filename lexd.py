@@ -16,19 +16,19 @@ async def main() -> None:
     while True:
         if settings.get("voice_input"):
             try:
-                cmd = transcribe()
+                cmd = await asyncio.to_thread(transcribe)
                 print(f"> {cmd}")
             except Exception as e:
                 print(f"[Lex] Voice input error: {e}")
-                cmd = input("> ").strip()
+                cmd = (await asyncio.to_thread(input, "> ")).strip()
         else:
-            cmd = input("> ").strip()
+            cmd = (await asyncio.to_thread(input, "> ")).strip()
         if cmd:
             response = await dispatcher.dispatch(cmd)
             if response:
                 print(response)
                 if speaker:
-                    speaker.speak(response)
+                    await speaker.speak(response)
 
 
 if __name__ == "__main__":
