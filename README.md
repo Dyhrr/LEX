@@ -1,35 +1,36 @@
 # 🧠 Lex – Your Personal, Local-First, Sarcastic AI Assistant
 
-Lex is your on-PC digital assistant that doesn’t spy on you, doesn’t eat your FPS, and doesn’t give a damn if you asked nicely.  
-Think: **Jarvis**, if he chain-smoked sarcasm and refused to use the cloud without permission.
+Lex is a small desktop assistant that lives entirely on your PC. It won't phone
+home unless you explicitly allow it. Think **Jarvis** with more attitude and a
+hard rule against cloud dependency.
 
 ---
 
 ## ⚙️ What It Is
 
-Lex is a **modular, locally-running AI assistant** designed to:
+Lex is a **modular, locally running assistant** designed to:
 - Stay offline unless *you* say otherwise
-- Be extended easily through plugin-style commands
+- Be extended through simple plugin commands
 - Talk back with sarcastic, human-like sass
-- Automate basic crap so you don’t forget to drink water (again)
+- Automate boring tasks so you don’t forget to drink water (again)
 
 ---
 
 ## ✅ What Actually Works Right Now
 
-### Functional Core:
-- ✅ Modular plugin loader (via `dispatcher.py`)
+### Functional Core
+- ✅ Modular plugin loader via `dispatcher.py`
 - ✅ Async command processing (non-blocking CLI loop)
 - ✅ Config loader with default injection (`settings.json`)
 - ✅ Fully offline (unless using `define`, which pings an API)
 
-### Plugin Commands (Some working):
-- ✅ `remind me in X minutes to Y` (with persistence + cancel/list)
-- ✅ `open notepad`, `search for cats` (real app and browser launches)
+### Example Commands
+- ✅ `remind me in X minutes to Y` (persistent reminders)
+- ✅ `open notepad`, `search for cats`
 - ✅ `kill discord` (taskkill whitelist-safe)
 - ✅ `generate password`, `generate uuid`
 - ✅ `flip a coin`, `roast me`, `compliment me`
-- ✅ `define <word>` (real API-based)
+- ✅ `define <word>` (real API based)
 - ✅ `weather` (mocked for now)
 - ✅ `vault` with AES encryption, master password, and CRUD ops
 
@@ -37,16 +38,16 @@ Lex is a **modular, locally-running AI assistant** designed to:
 
 ## 🛣 Roadmap
 
-### 🚧 Short-Term (in progress / queued)
-- [ ] Voice input via Whisper or speech_recognition
+### 🚧 Short-Term
+- [ ] Voice input via Whisper or `speech_recognition`
 - [ ] Text-to-speech output (pyttsx3, ElevenLabs optional)
-- [ ] Plugin hot reloading (no restarts for new modules)
+- [ ] Plugin hot reloading
 - [ ] Debug dashboard or CLI monitor
 - [ ] Cross-platform support (Linux/macOS compatibility)
 
 ### 🧠 Future Ideas
-- [ ] Routine learning (suggest recurring tasks based on behavior)
-- [ ] Context tracking (multi-step conversation memory)
+- [ ] Routine learning
+- [ ] Context tracking for multi-step conversations
 - [ ] Plugin marketplace or repo sync
 - [ ] Sarcasm tone slider in `settings.json` (because chaos)
 
@@ -54,20 +55,34 @@ Lex is a **modular, locally-running AI assistant** designed to:
 
 ## 📂 Folder Structure
 LEX/
-├── lexd.py # Main async loop
-├── dispatcher.py # Plugin command router
-├── settings.json # Global config
-├── core/ # Core settings/utils
-├── commands/ # Your plugin modules
-├── memory/ # Persistent storage (reminders, vault)
-├── personality/ # Tone files, sass library
+├── lexd.py           # Main async loop
+├── dispatcher.py     # Plugin command router
+├── settings.json     # Global config
+├── core/             # Core settings/utils
+├── commands/         # Your plugin modules
+├── memory/           # Persistent storage (reminders, vault)
+├── personality/      # Tone files, sass library
 ---
 
-## 🔌 Commands & Plugins
+## 🧩 Commands & Plugins
 
-All plugins live in the `commands/` folder. Any module that exposes a
-`Command` class with a `trigger` list and an asynchronous `run()` method
-is picked up automatically by `dispatcher.py`.
+All plugins live in the `commands/` folder. Any module that exposes a `Command` class with a `trigger` list and an asynchronous `run()` method is picked up automatically by `dispatcher.py`.
+
+```python
+class Command:
+    trigger = ["ping"]
+
+    def __init__(self, context):
+        self.context = context
+
+    async def run(self, args: str) -> str:
+        return "Pong!"
+
+
+All plugins live in the `commands/` folder. The dispatcher scans that directory
+at startup and imports any module exposing a `Command` class. Each command lists
+one or more trigger words in `trigger` and implements an asynchronous `run()`
+method.
 
 ```python
 class Command:
@@ -80,33 +95,31 @@ class Command:
         return "Pong!"
 ```
 
-Responses are returned as plain text for now. Voice input and text to
-speech will come later, but the command system works without them.
+Responses are returned as plain text for now. Voice input and text-to-speech are
+planned but optional—the command system works fine without them.
 
-💡 Design Philosophy
+When writing a plugin, keep it async-friendly. Long-running work should be done
+with asyncio-compatible libraries to avoid blocking the event loop. The context
+dict passed to each `Command` can be used to access settings or share state.
+
+
+💡 **Design Philosophy**
 Lex is:
 
-Not cloud-bound
-
-Not polite by default
-
-Not eating 1GB of RAM to tell you what time it is
+- Local-first—no cloud calls unless `use_cloud` is enabled
+- Sarcastic by default
+- Lightweight (no gigabyte RAM usage just to say "hi")
 
 He’s meant to be:
 
-Expandable
+- Expandable through simple plugins
+- Helpful with a side of attitude
+- Dumb enough to stay local, smart enough to feel personal
 
-Sarcastically helpful
+🔒 **License**
+MIT License. No analytics, no telemetry—just you, your PC, and an assistant with attitude.
 
-Dumb enough to stay local, smart enough to feel personal
+🐢 **Credits**
+Created by Dyhrrr, the sort of developer who'd rather automate life than organize it.
 
-🔒 Licensing
-MIT License.
-No analytics. No telemetry. Just you, your PC, and a personality-injected assistant with attitude.
-
-🐢 Credits
-Made by Dyhrrr — the kind of dev who sleeps on the floor but builds tools better than your average SaaS startup.
-
-“Built to automate my life, so I can keep ignoring it.”
-
-
+"Built to automate my life, so I can keep ignoring it."
