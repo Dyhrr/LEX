@@ -30,6 +30,7 @@ Lex is a **modular, locally running assistant** designed to:
 - ✅ Passphrase-protected startup with encrypted vault
 - ✅ Fully offline (unless using `define`, which pings an API)
 - ✅ Expanded natural language parsing for common phrases
+- ✅ Fuzzy matching for misspelled commands
 - ✅ Optional voice input and text-to-speech output
 
 ### Example Commands
