@@ -2,6 +2,8 @@ import importlib
 import pkgutil
 from typing import List
 
+from core.nlp import normalize_input
+
 
 class Dispatcher:
     def __init__(self, context: dict | None = None):
@@ -30,12 +32,14 @@ class Dispatcher:
                 print(f"[Lex] ERROR loading {module_name}: {e}")
 
     async def dispatch(self, input_text: str):
-        lowered = input_text.lower()
+        """Route the given text to the appropriate command."""
+        text = normalize_input(input_text)
+        lowered = text.lower()
         for cmd in self.commands:
             triggers = getattr(cmd, "trigger", [])
             for trig in triggers:
                 if lowered.startswith(trig):
-                    args = input_text[len(trig):].strip()
+                    args = text[len(trig):].strip()
                     try:
                         return await cmd.run(args)
                     except Exception as e:
