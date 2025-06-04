@@ -30,6 +30,7 @@ class Command:
         await asyncio.to_thread(self._write_json, data)
 
     async def run(self, args: str) -> str:
+        """Store and list personal reminders."""
         args = args.strip()
         reminders = await self._load()
         if not args or args.lower() == "list":

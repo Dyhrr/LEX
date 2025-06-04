@@ -6,6 +6,7 @@ class Command:
         self.settings = context.get("settings", {})
 
     async def run(self, args: str) -> str:
+        """Look up a word using an online dictionary API when allowed."""
         word = args.strip()
         if not word:
             return "[Lex] Define what exactly?"

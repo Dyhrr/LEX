@@ -6,6 +6,7 @@ class Command:
         self.settings = context.get("settings", {})
 
     async def run(self, args: str) -> str:
+        """Reply with a simple pong message."""
         from personality.responder import get_response
 
         reply = get_response("ping", self.settings)
