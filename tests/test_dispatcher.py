@@ -28,3 +28,29 @@ async def test_nlp_remind(tmp_path):
             cmd.file = tmp_path / "reminders.json"
     resp = await dispatcher.dispatch("Remind me to drink water")
     assert "Reminder saved" in resp
+
+
+@pytest.mark.asyncio
+async def test_nlp_remind_variation(tmp_path):
+    settings = load_settings()
+    dispatcher = Dispatcher({"settings": settings})
+    for cmd in dispatcher.commands:
+        if hasattr(cmd, "file"):
+            cmd.file = tmp_path / "reminders2.json"
+    resp = await dispatcher.dispatch("Can you remind me to stand up")
+    assert "Reminder saved" in resp
+
+
+@pytest.mark.asyncio
+async def test_nlp_tools_uuid():
+    dispatcher = Dispatcher({"settings": load_settings()})
+    resp = await dispatcher.dispatch("I need a uuid")
+    import uuid
+    uuid.UUID(resp)
+
+
+@pytest.mark.asyncio
+async def test_nlp_weather():
+    dispatcher = Dispatcher({"settings": load_settings()})
+    resp = await dispatcher.dispatch("How's the weather in Tokyo")
+    assert "Tokyo" in resp
