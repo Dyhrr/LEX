@@ -6,3 +6,6 @@ pytest
 pytest-asyncio
 scikit-learn
 joblib
+
+pyperclip
+psutil

@@ -43,6 +43,10 @@ Lex is a **modular, locally running assistant** designed to:
 - ✅ `vault` with passphrase-encrypted storage
 - ✅ Natural phrasing like "can you remind me to drink" or "how's the weather"
 - ✅ Teach Lex new phrases with `learn <phrase> as <command>`
+- ✅ `search index` then `search <file>` to locate files
+- ✅ `clipboard add <text>` and `clipboard paste`
+- ✅ `notes add <text>` for a quick local wiki
+- ✅ `health` to check CPU, RAM and disk usage
 
 ---
 
