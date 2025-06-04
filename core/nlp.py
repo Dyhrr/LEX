@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 from typing import Callable, List
 
+import json
+import os
 import re
 
 
@@ -54,6 +56,58 @@ def preprocess(text: str) -> str:
 # Global registry of default intents. Registration order matters.
 REGISTRY = IntentRegistry()
 
+# File storing user learned phrases
+CUSTOM_INTENTS_FILE = os.path.join("memory", "custom_intents.json")
+
+# Registry for user-defined intents
+CUSTOM_REGISTRY = IntentRegistry()
+
+_custom_cache: dict[str, str] | None = None
+
+
+def _load_custom_intents() -> dict[str, str]:
+    global _custom_cache
+    if _custom_cache is not None:
+        return _custom_cache
+    if not os.path.exists(CUSTOM_INTENTS_FILE):
+        _custom_cache = {}
+        return _custom_cache
+    try:
+        with open(CUSTOM_INTENTS_FILE, "r", encoding="utf-8") as fh:
+            _custom_cache = json.load(fh)
+    except Exception:
+        _custom_cache = {}
+    return _custom_cache
+
+
+def _save_custom_intents(data: dict[str, str]) -> None:
+    os.makedirs(os.path.dirname(CUSTOM_INTENTS_FILE), exist_ok=True)
+    with open(CUSTOM_INTENTS_FILE, "w", encoding="utf-8") as fh:
+        json.dump(data, fh)
+
+
+def _refresh_custom_registry() -> None:
+    CUSTOM_REGISTRY._intents.clear()
+    for phrase, command in _load_custom_intents().items():
+        pattern = re.compile(rf"^{re.escape(phrase)}$", re.I)
+        CUSTOM_REGISTRY.register(pattern, lambda _m, c=command: c)
+
+
+def add_custom_intent(phrase: str, command: str) -> None:
+    data = _load_custom_intents()
+    phrase = preprocess(phrase)
+    data[phrase] = command
+    _save_custom_intents(data)
+    _refresh_custom_registry()
+
+
+def get_custom_intents() -> dict[str, str]:
+    return _load_custom_intents().copy()
+
+
+# Populate registry on import
+_refresh_custom_registry()
+
 
 def register_default_intents() -> None:
     """Populate the intent registry with built-in patterns."""
@@ -101,7 +155,11 @@ register_default_intents()
 def normalize_input(text: str) -> str:
     """Public API used by the dispatcher."""
 
-    return REGISTRY.parse(text)
+    cleaned = preprocess(text)
+    result = CUSTOM_REGISTRY.parse(cleaned)
+    if result != cleaned:
+        return result
+    return REGISTRY.parse(cleaned)
 
 
 if __name__ == "__main__":

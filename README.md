@@ -37,6 +37,7 @@ Lex is a **modular, locally running assistant** designed to:
 - ✅ `weather` (mocked for now)
 - ✅ `vault` with passphrase-encrypted storage
 - ✅ Natural phrasing like "can you remind me to drink" or "how's the weather"
+- ✅ Teach Lex new phrases with `learn <phrase> as <command>`
 
 ---
 
