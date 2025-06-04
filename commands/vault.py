@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+from cryptography.fernet import Fernet
 
 VAULT_FILE = os.path.join("memory", "vault.json")
 
@@ -11,12 +12,21 @@ class Command:
     def __init__(self, context):
         self.context = context
         self.file = VAULT_FILE
+        self.key: bytes | None = context.get("vault_key")
         self.lock = asyncio.Lock()
 
     def _read_json(self) -> dict:
         if not os.path.exists(self.file):
             return {}
         try:
+            if self.key:
+                with open(self.file, "rb") as fh:
+                    data = fh.read()
+                try:
+                    decrypted = Fernet(self.key).decrypt(data)
+                except Exception:
+                    return {}
+                return json.loads(decrypted.decode("utf-8"))
             with open(self.file, "r", encoding="utf-8") as fh:
                 return json.load(fh)
         except Exception:
@@ -24,8 +34,13 @@ class Command:
 
     def _write_json(self, data: dict) -> None:
         os.makedirs(os.path.dirname(self.file), exist_ok=True)
-        with open(self.file, "w", encoding="utf-8") as fh:
-            json.dump(data, fh)
+        if self.key:
+            token = Fernet(self.key).encrypt(json.dumps(data).encode())
+            with open(self.file, "wb") as fh:
+                fh.write(token)
+        else:
+            with open(self.file, "w", encoding="utf-8") as fh:
+                json.dump(data, fh)
 
     async def _load(self) -> dict:
         async with self.lock:
