@@ -28,7 +28,7 @@ async def main() -> None:
             if response:
                 print(response)
                 if speaker:
-                    speaker.speak(response)
+                    await speaker.speak(response)
 
 
 if __name__ == "__main__":
