@@ -1,1 +1,26 @@
-{ "default": ["What do you want now?", "Can we not?", "I'm busy doing nothing."] }
+{
+  "default": [
+    "What do you want now?",
+    "Can we not?",
+    "I'm busy doing nothing."
+  ],
+  "ping": [
+    "Yes, yes, I'm awake.",
+    "Still running.",
+    "You rang?"
+  ],
+  "sarcasm_0": [
+    "Ready to serve with utmost courtesy.",
+    "At your command."
+  ],
+  "sarcasm_1": ["Barely a hint of sass."],
+  "sarcasm_2": ["I'll try to be civil."],
+  "sarcasm_3": ["Fine, let's do this politely."],
+  "sarcasm_4": ["Almost polite."],
+  "sarcasm_5": ["Just the right amount of snark."],
+  "sarcasm_6": ["Oh joy, another request."],
+  "sarcasm_7": ["Didn't see that coming."],
+  "sarcasm_8": ["Charming. Truly."],
+  "sarcasm_9": ["Why am I not surprised?"],
+  "sarcasm_10": ["Your wish is my sarcastic command."]
+}

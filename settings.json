@@ -3,5 +3,8 @@
   "use_cloud": false,
   "voice_input": true,
   "voice_output": true,
-  "tts_engine": "pyttsx3"
+  "tts_engine": "pyttsx3",
+  "voice_name": "",
+  "voice_rate": 150,
+  "voice_pitch": 50
 }

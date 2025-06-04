@@ -20,7 +20,15 @@ class Command:
                 return "[Lex] Give me a number between 0 and 10."
             level = max(0, min(10, level))
             settings["sarcasm_level"] = level
-            return f"[Lex] Sarcasm level set to {level}."
+            from personality.responder import get_response
+
+            level_str = str(level)
+            resp = get_response(f"sarcasm_{level_str}", settings)
+            return f"[Lex] Sarcasm level set to {level}. {resp}"
 
         level = settings.get("sarcasm_level", "unknown")
-        return f"[Lex] Current sarcasm level: {level}."
+        from personality.responder import get_response
+
+        level_str = str(level)
+        resp = get_response(f"sarcasm_{level_str}", settings)
+        return f"[Lex] Current sarcasm level: {level}. {resp}"

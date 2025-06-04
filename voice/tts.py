@@ -9,6 +9,21 @@ class TTS:
         if self.settings.get("tts_engine", "pyttsx3") == "pyttsx3":
             try:
                 self.engine = pyttsx3.init()
+                name = self.settings.get("voice_name")
+                if name:
+                    for voice in self.engine.getProperty("voices"):
+                        if name.lower() in voice.name.lower():
+                            self.engine.setProperty("voice", voice.id)
+                            break
+                rate = self.settings.get("voice_rate")
+                if rate:
+                    self.engine.setProperty("rate", rate)
+                pitch = self.settings.get("voice_pitch")
+                if pitch is not None:
+                    try:
+                        self.engine.setProperty("pitch", pitch)
+                    except Exception:
+                        pass
             except Exception as e:
                 print(f"[Lex] pyttsx3 error: {e}")
 
