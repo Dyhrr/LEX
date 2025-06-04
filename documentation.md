@@ -9,7 +9,7 @@ implementation.
 | cleanup.py | `cleanup` | Remove `.tmp` files or clear Python caches. |
 | clipboard.py | `clipboard` | Maintain a simple clipboard history (add, show, paste, clear). |
 | codeassist.py | `codeassist` | Return handy Python code snippets for common tasks. |
-| collab.py | `collab` | Placeholder for collaboration utilities. |
+| collab.py | `collab` | Share a folder over HTTP to quickly collaborate. |
 | define.py | `define` | Look up word definitions using a web API when cloud access is allowed. |
 | email_summary.py | `email_summary` | Placeholder to summarize new emails. |
 | features.py | `features`, `missing features` | List potential new features from a JSON suggestions file. |
@@ -21,7 +21,7 @@ implementation.
 | knowledge.py | `knowledge` | Search local documentation for matching lines. |
 | learn.py | `learn`, `teach` | Teach Lex new phrases that map to commands. |
 | notes.py | `notes`, `note` | Store short notes locally. |
-| notify.py | `notify` | Placeholder for desktop notifications. |
+| notify.py | `notify` | Send desktop notifications and list recent ones. |
 | personality.py | `personality` | Get or set sarcasm level. |
 | ping.py | `ping`, `are you alive` | Respond with a simple "Pong" message. |
 | pingback.py | `pingback` | Check if a host is reachable via `ping`. |
@@ -30,7 +30,7 @@ implementation.
 | remind.py | `remind` | Store and list reminders. |
 | schedule.py | `schedule` | Manage dated events in a small local schedule. |
 | search.py | `search`, `find`, `locate` | Search files from a local index. |
-| secdash.py | `secdash` | Placeholder for security dashboard. |
+| secdash.py | `secdash` | Show active network connections and kill by PID. |
 | smarthome.py | `smarthome` | Placeholder for smart home controls. |
 | system.py | `system` | Show basic system information. |
 | tone.py | `tone` | Adjust voice name, rate and pitch. |
