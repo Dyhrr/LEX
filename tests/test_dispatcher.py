@@ -54,3 +54,16 @@ async def test_nlp_weather():
     dispatcher = Dispatcher({"settings": load_settings()})
     resp = await dispatcher.dispatch("How's the weather in Tokyo")
     assert "Tokyo" in resp
+
+
+@pytest.mark.asyncio
+async def test_dispatcher_features(tmp_path, monkeypatch):
+    import json
+    from commands import features
+
+    file = tmp_path / "feature_suggestions.json"
+    file.write_text(json.dumps({"brew coffee": {"pattern": "^brew$"}}))
+    dispatcher = Dispatcher({"settings": load_settings()})
+    monkeypatch.setattr(features, "SUGGESTIONS_FILE", file)
+    resp = await dispatcher.dispatch("what features are you missing")
+    assert "brew coffee" in resp

@@ -196,6 +196,9 @@ def register_default_intents() -> None:
     # Ping / system info
     reg(r"^are you there", lambda m: "ping")
     reg(r"^are you awake", lambda m: "ping")
+    reg(r"^what features are you missing", lambda m: "features")
+    reg(r"^what features do you lack", lambda m: "features")
+    reg(r"^missing features", lambda m: "features")
 
 
 register_default_intents()
