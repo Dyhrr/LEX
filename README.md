@@ -34,7 +34,7 @@ Lex is a **modular, locally running assistant** designed to:
 - ✅ `flip a coin`, `roast me`, `compliment me`
 - ✅ `define <word>` (real API based)
 - ✅ `weather` (mocked for now)
-- ✅ `vault` with AES encryption, master password, and CRUD ops
+- ✅ `vault` with simple JSON storage for CRUD ops (no encryption yet)
 - ✅ Natural phrasing like "remind me to drink" or "what's the weather"
 
 ---
