@@ -30,9 +30,7 @@ LEX/
 ├── personality/ # Sass library, tone templates, and sarcasm settings
 ├── settings.json # User settings (flags, TTS/STT choices, sarcasm level)
 
-yaml
-Copy
-Edit
+
 
 ---
 
@@ -54,6 +52,7 @@ As a Codex agent, your job is to:
 To run Lex:
 ```bash
 python lexd.py
+```
 Tests aren’t formalized yet. You can:
 
 Check that plugin commands respond correctly
@@ -76,14 +75,12 @@ Do not bloat memory or mess with GPU tasks unless explicitly required.
 🧩 Plugin Schema
 Each file in commands/ should contain:
 
-python
-Copy
-Edit
 class Command:
     trigger = ["example", "demo"]  # Trigger keywords
     def __init__(self, context): pass
     async def run(self, args: str) -> str:
         return "Example response"
+        
 🤖 AI Behavior
 Be helpful, not creepy.
 
