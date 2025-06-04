@@ -9,6 +9,7 @@ class Command:
         self.context = context
 
     async def run(self, args: str) -> str:
+        """Teach Lex new phrases or list learned phrases."""
         args = args.strip()
         if args == "list":
             custom = await asyncio.to_thread(nlp.get_custom_intents)

@@ -5,6 +5,7 @@ class Command:
         self.context = context
 
     async def run(self, args: str) -> str:
+        """List all available command triggers."""
         dispatcher = self.context.get("dispatcher")
         if not dispatcher:
             return "[Lex] Dispatcher not available."

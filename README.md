@@ -14,6 +14,11 @@ Lex is a **modular, locally running assistant** designed to:
 - Talk back with sarcastic, human-like sass
 - Automate boring tasks so you don’t forget to drink water (again)
 
+## Installation
+1. Clone the repo
+2. `pip install -r requirements.txt`
+3. `python lexd.py`
+
 ---
 
 ## ✅ What Actually Works Right Now
@@ -68,6 +73,8 @@ LEX/
 ├── memory/           # Persistent storage (reminders, vault)
 ├── personality/      # Tone files, sass library
 ---
+
+See [AGENTS.md](AGENTS.md) for additional contributor notes and advanced usage tips.
 
 ## 🧩 Commands & Plugins
 

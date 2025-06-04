@@ -6,6 +6,7 @@ class Command:
         self.settings = context.get("settings", {})
 
     async def run(self, args: str) -> str:
+        """Return a weather report using a local or cloud source."""
         location = args.strip() or "your area"
         if not self.settings.get("use_cloud"):
             return f"[Lex] It's probably fine outside in {location}."
