@@ -8,7 +8,7 @@ implementation.
 |-------|----------|-------------|
 | cleanup.py | `cleanup` | Remove `.tmp` files or clear Python caches. |
 | clipboard.py | `clipboard` | Maintain a simple clipboard history (add, show, paste, clear). |
-| codeassist.py | `codeassist` | Placeholder for coding assistance features. |
+| codeassist.py | `codeassist` | Return handy Python code snippets for common tasks. |
 | collab.py | `collab` | Placeholder for collaboration utilities. |
 | define.py | `define` | Look up word definitions using a web API when cloud access is allowed. |
 | email_summary.py | `email_summary` | Placeholder to summarize new emails. |
@@ -20,7 +20,7 @@ implementation.
 | hotkey.py | `hotkey` | Placeholder for custom hotkey support. |
 | hud.py | `hud` | Placeholder for heads-up display features. |
 | info.py | `info` | Display loaded commands and current settings. |
-| knowledge.py | `knowledge` | Placeholder for knowledge base queries. |
+| knowledge.py | `knowledge` | Search local documentation for matching lines. |
 | learn.py | `learn`, `teach` | Teach Lex new phrases that map to commands. |
 | notes.py | `notes`, `note` | Store short notes locally. |
 | notify.py | `notify` | Placeholder for desktop notifications. |
@@ -37,7 +37,7 @@ implementation.
 | system.py | `system` | Show basic system information. |
 | tone.py | `tone` | Adjust voice name, rate and pitch. |
 | tools.py | `tools` | Generate UUIDs or random passwords. |
-| translate.py | `translate` | Placeholder for text translation. |
+| translate.py | `translate` | Translate text using a small offline dictionary or cloud API. |
 | vault.py | `vault` | Store or retrieve key/value pairs, optionally encrypted. |
 | wakeword.py | `wakeword` | Placeholder to configure wake words. |
 | weather.py | `weather` | Return a weather report (cloud or local). |
