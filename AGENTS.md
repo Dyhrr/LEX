@@ -44,6 +44,7 @@ As a Codex agent, your job is to:
 - Inject sarcasm based on tone settings in `personality/`.
 - Log actions with timestamps (use `core/logger.py` if it exists).
 - Don’t touch the internet unless `settings.json > use_cloud == true`.
+  
 
 ---
 
@@ -55,11 +56,8 @@ python lexd.py
 ```
 Tests aren’t formalized yet. You can:
 
-Check that plugin commands respond correctly
-
-Use mock inputs via cli.py or simulate a voice transcript
-
-Verify reminders persist in memory/ as JSON files
+Codex, you are expected to test any plugin, dispatcher change, or parser improvement against the following suite.
+Do not make pull requests unless all tests pass.
 
 🧠 Notes for Codex
 Use Python 3.11+ syntax
