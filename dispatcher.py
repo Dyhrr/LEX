@@ -10,6 +10,7 @@ class Dispatcher:
         self.context = context or {}
         self.context["dispatcher"] = self
         self.commands: List[object] = []
+        self.trigger_map: dict[str, object] = {}
         self.load_modules()
 
     def load_modules(self):
@@ -23,6 +24,10 @@ class Dispatcher:
                     self.commands.append(instance)
                     # keep track of loaded command instances
                     self.context.setdefault("commands", {})[name] = instance
+                    # map triggers to command instance for quick lookup
+                    triggers = getattr(instance, "trigger", [])
+                    for trig in triggers:
+                        self.trigger_map[trig.lower()] = instance
                     print(f"[Lex] Loaded: {module_name}")
                 else:
                     print(f"[Lex] WARNING: {module_name} missing Command class")
@@ -33,17 +38,17 @@ class Dispatcher:
         """Route the given text to the appropriate command."""
         text = normalize_input(input_text)
         lowered = text.lower()
-        for cmd in self.commands:
-            triggers = getattr(cmd, "trigger", [])
-            for trig in triggers:
-                if lowered.startswith(trig):
-                    args = text[len(trig):].strip()
-                    try:
-                        result = await cmd.run(args)
-                        self.context["last_command"] = trig
-                        self.context["last_result"] = result
-                        return result
-                    except Exception as e:
-                        print(f"[Lex] ERROR in {cmd.__class__.__name__}: {e}")
-                        return "[Lex] Something went wrong."
+
+        for trig, cmd in self.trigger_map.items():
+            if lowered.startswith(trig):
+                args = text[len(trig):].strip()
+                try:
+                    result = await cmd.run(args)
+                    self.context["last_command"] = trig
+                    self.context["last_result"] = result
+                    return result
+                except Exception as e:
+                    print(f"[Lex] ERROR in {cmd.__class__.__name__}: {e}")
+                    return "[Lex] Something went wrong."
+
         return "[Lex] I don't know what you want, and I'm too tired to guess."
