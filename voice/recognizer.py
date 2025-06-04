@@ -3,6 +3,7 @@ import asyncio
 from tempfile import NamedTemporaryFile
 import speech_recognition as sr
 
+
 _whisper_model = None
 
 
@@ -22,7 +23,12 @@ async def transcribe(timeout: int | None = None) -> str:
     """Listen from the microphone and return recognized text."""
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
-        audio = await asyncio.to_thread(recognizer.listen, source, timeout=timeout)
+        try:
+            audio = await asyncio.to_thread(
+                recognizer.listen, source, timeout=timeout
+            )
+        except sr.WaitTimeoutError:
+            return ""
 
     try:
         return recognizer.recognize_sphinx(audio)
