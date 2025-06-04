@@ -6,6 +6,7 @@ from typing import List
 class Dispatcher:
     def __init__(self, context: dict | None = None):
         self.context = context or {}
+        self.context["dispatcher"] = self
         self.commands: List[object] = []
         # expose dispatcher in shared context for plugins
         self.context["dispatcher"] = self
