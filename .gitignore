@@ -23,3 +23,5 @@ Thumbs.db
 # Lex-specific
 memory/*.json
 settings.json  # If you want to prevent your local settings from being committed
+models/
+data/

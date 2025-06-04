@@ -4,3 +4,5 @@ SpeechRecognition
 pyttsx3
 pytest
 pytest-asyncio
+scikit-learn
+joblib
