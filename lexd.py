@@ -4,9 +4,10 @@ import asyncio
 from core.settings import load_settings
 from dispatcher import Dispatcher
 
-async def main():
+
+async def main() -> None:
     settings = load_settings()
-    dispatcher = Dispatcher()
+    dispatcher = Dispatcher({"settings": settings})
 
     print("[Lex] Starting daemon loop...")
     while True:
@@ -16,7 +17,8 @@ async def main():
             if response:
                 print(response)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:

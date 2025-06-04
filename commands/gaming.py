@@ -1,1 +1,8 @@
-def handle(input_text): return 'gaming response'
+class Command:
+    trigger = ["game", "gaming"]
+
+    def __init__(self, context):
+        self.context = context
+
+    async def run(self, args: str) -> str:
+        return "gaming response"

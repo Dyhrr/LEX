@@ -63,6 +63,26 @@ LEX/
 ├── personality/ # Tone files, sass library
 ---
 
+## 🔌 Commands & Plugins
+
+All plugins live in the `commands/` folder. Any module that exposes a
+`Command` class with a `trigger` list and an asynchronous `run()` method
+is picked up automatically by `dispatcher.py`.
+
+```python
+class Command:
+    trigger = ["ping"]
+
+    def __init__(self, context):
+        self.context = context
+
+    async def run(self, args: str) -> str:
+        return "Pong!"
+```
+
+Responses are returned as plain text for now. Voice input and text to
+speech will come later, but the command system works without them.
+
 💡 Design Philosophy
 Lex is:
 
