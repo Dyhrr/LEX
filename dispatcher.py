@@ -18,6 +18,7 @@ class Dispatcher:
         self.trigger_map: dict[str, object] = {}
         self.module_mtimes: dict[str, float] = {}
         self.package_path = importlib.import_module(self.package).__path__[0]
+
         self.load_modules()
 
     def check_for_updates(self) -> bool:
@@ -64,8 +65,9 @@ class Dispatcher:
                     instance = module.Command(self.context)
                     self.commands.append(instance)
                     self.context.setdefault("commands", {})[name] = instance
+                    # Map triggers to command instance for quick lookup
                     for trig in getattr(instance, "trigger", []):
-                        self.trigger_map[trig] = instance
+                        self.trigger_map[trig.lower()] = instance
                     print(f"[Lex] Loaded: {module_name}")
                 else:
                     print(f"[Lex] WARNING: {module_name} missing Command class")
@@ -76,6 +78,7 @@ class Dispatcher:
         """Route the given text to the appropriate command."""
         text = normalize_input(input_text)
         lowered = text.lower()
+
         for trig, cmd in self.trigger_map.items():
             if lowered.startswith(trig):
                 args = text[len(trig):].strip()
@@ -87,4 +90,5 @@ class Dispatcher:
                 except Exception as e:
                     print(f"[Lex] ERROR in {cmd.__class__.__name__}: {e}")
                     return "[Lex] Something went wrong."
+
         return "[Lex] I don't know what you want, and I'm too tired to guess."

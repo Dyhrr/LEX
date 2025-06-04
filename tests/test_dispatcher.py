@@ -7,7 +7,15 @@ from dispatcher import Dispatcher
 @pytest.mark.asyncio
 async def test_dispatcher_ping():
     dispatcher = Dispatcher({"settings": load_settings()})
+    assert "ping" in dispatcher.trigger_map
     resp = await dispatcher.dispatch("ping")
+    assert "Pong" in resp
+
+
+@pytest.mark.asyncio
+async def test_dispatcher_alias():
+    dispatcher = Dispatcher({"settings": load_settings()})
+    resp = await dispatcher.dispatch("are you alive")
     assert "Pong" in resp
 
 
