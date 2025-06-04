@@ -2,6 +2,7 @@
 
 import asyncio
 from core.settings import load_settings
+from core.security import require_vault_key
 from dispatcher import Dispatcher
 from voice.recognizer import transcribe
 from voice.tts import TTS
@@ -9,7 +10,8 @@ from voice.tts import TTS
 
 async def main() -> None:
     settings = load_settings()
-    dispatcher = Dispatcher({"settings": settings})
+    key = require_vault_key()
+    dispatcher = Dispatcher({"settings": settings, "vault_key": key})
     speaker = TTS(settings) if settings.get("voice_output") else None
 
     print("[Lex] Starting daemon loop...")

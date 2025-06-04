@@ -22,6 +22,7 @@ Lex is a **modular, locally running assistant** designed to:
 - ✅ Modular plugin loader via `dispatcher.py`
 - ✅ Async command processing (non-blocking CLI loop)
 - ✅ Config loader with default injection (`settings.json`)
+- ✅ Passphrase-protected startup with encrypted vault
 - ✅ Fully offline (unless using `define`, which pings an API)
 - ✅ Expanded natural language parsing for common phrases
 - ✅ Optional voice input and text-to-speech output
@@ -34,7 +35,7 @@ Lex is a **modular, locally running assistant** designed to:
 - ✅ `flip a coin`, `roast me`, `compliment me`
 - ✅ `define <word>` (real API based)
 - ✅ `weather` (mocked for now)
-- ✅ `vault` with simple JSON storage for CRUD ops (no encryption yet)
+- ✅ `vault` with passphrase-encrypted storage
 - ✅ Natural phrasing like "can you remind me to drink" or "how's the weather"
 
 ---
