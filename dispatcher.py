@@ -14,6 +14,7 @@ class Dispatcher:
         self.package = package
         self.context = context or {}
         self.context["dispatcher"] = self
+        self.context.setdefault("history", [])
         self.commands: List[object] = []
         self.trigger_map: dict[str, object] = {}
         self.module_mtimes: dict[str, float] = {}
@@ -86,6 +87,11 @@ class Dispatcher:
                     result = await cmd.run(args)
                     self.context["last_command"] = trig
                     self.context["last_result"] = result
+                    history = self.context.get("history")
+                    if isinstance(history, list):
+                        history.append((input_text, result))
+                        if len(history) > 20:
+                            del history[:-20]
                     return result
                 except Exception as e:
                     print(f"[Lex] ERROR in {cmd.__class__.__name__}: {e}")
