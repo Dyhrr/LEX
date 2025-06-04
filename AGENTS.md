@@ -54,9 +54,7 @@ To run Lex:
 ```bash
 python lexd.py
 ```
-Tests aren’t formalized yet. You can:
-
-Codex, you are expected to test any plugin, dispatcher change, or parser improvement against the following suite.
+You are expected to test any plugin, dispatcher change, or parser improvement against the following suite.
 Do not make pull requests unless all tests pass.
 
 🧠 Notes for Codex
