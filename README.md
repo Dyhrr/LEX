@@ -1,50 +1,55 @@
 # 🧠 Lex – Your Personal, Local-First, Sarcastic AI Assistant
 
-Lex is your on-PC digital assistant that doesn’t spy on you, doesn’t eat your RAM for breakfast, and won’t apologize every time it fails (because it probably meant to).  
-Think: **Jarvis** if he was coded by a sleep-deprived gamer with control issues and a mild god complex.
+Lex is your on-PC digital assistant that doesn’t spy on you, doesn’t eat your FPS, and doesn’t give a damn if you asked nicely.  
+Think: **Jarvis**, if he chain-smoked sarcasm and refused to use the cloud without permission.
 
 ---
 
 ## ⚙️ What It Is
 
-Lex is a **modular, low-resource, always-on AI assistant** built to:
-- Run **100% locally** (no cloud required unless you say so)
-- Do **actual useful shit** like reminders, app launches, password storage
-- Be **expandable** with drop-in command modules (plugins)
-- Talk to you like a roommate who’s too smart for their own good
+Lex is a **modular, locally-running AI assistant** designed to:
+- Stay offline unless *you* say otherwise
+- Be extended easily through plugin-style commands
+- Talk back with sarcastic, human-like sass
+- Automate basic crap so you don’t forget to drink water (again)
 
 ---
 
-## 💡 Features
+## ✅ What Actually Works Right Now
 
-✅ Natural command detection (no slash commands, just talk to it)  
-✅ Async reminder system (multi-tasking, persistent across reboots)  
-✅ AES-encrypted password vault (master password protected)  
-✅ Dictionary definitions, password generator, coinflips, insults  
-✅ App launcher + Google search built-in  
-✅ Safe Windows process killer (kill Discord, not your whole system)  
-✅ Sarcastic fallback responses if you fail to make sense  
-✅ Fully modular plugin system with hot reload support (soon)
+### Functional Core:
+- ✅ Modular plugin loader (via `dispatcher.py`)
+- ✅ Async command processing (non-blocking CLI loop)
+- ✅ Config loader with default injection (`settings.json`)
+- ✅ Fully offline (unless using `define`, which pings an API)
 
----
-
-## 🛣 Roadmap (Short-Term)
-
-- [x] All base plugins functional
-- [x] Persistent reminders with human cancelation
-- [x] Vault with real encryption (Fernet)
-- [x] Voice-safe dispatcher with async CLI
-- [ ] Speech input/output support (Whisper STT, ElevenLabs TTS)
-- [ ] Context-aware responses + memory system
-- [ ] Plugin hot reload support
-- [ ] Smart scheduler (daily routines, adaptive habits)
-- [ ] Developer UI / debug dashboard
+### Plugin Commands (Some working):
+- ✅ `remind me in X minutes to Y` (with persistence + cancel/list)
+- ✅ `open notepad`, `search for cats` (real app and browser launches)
+- ✅ `kill discord` (taskkill whitelist-safe)
+- ✅ `generate password`, `generate uuid`
+- ✅ `flip a coin`, `roast me`, `compliment me`
+- ✅ `define <word>` (real API-based)
+- ✅ `weather` (mocked for now)
+- ✅ `vault` with AES encryption, master password, and CRUD ops
 
 ---
 
-## 🧱 Tech Stack
+## 🛣 Roadmap
 
-- **Language**: Python 3.10+
-- **Core**: `asyncio`, `cryptography`, `requests`
-- **Optional**: `pycaw`, `speech_recognition`, `torch` (for future voice stuff)
-- **File structure**:
+### 🚧 Short-Term (in progress / queued)
+- [ ] Voice input via Whisper or speech_recognition
+- [ ] Text-to-speech output (pyttsx3, ElevenLabs optional)
+- [ ] Plugin hot reloading (no restarts for new modules)
+- [ ] Debug dashboard or CLI monitor
+- [ ] Cross-platform support (Linux/macOS compatibility)
+
+### 🧠 Future Ideas
+- [ ] Routine learning (suggest recurring tasks based on behavior)
+- [ ] Context tracking (multi-step conversation memory)
+- [ ] Plugin marketplace or repo sync
+- [ ] Sarcasm tone slider in `settings.json` (because chaos)
+
+---
+
+## 📂 Folder Structure
