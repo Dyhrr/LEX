@@ -7,6 +7,8 @@ class Dispatcher:
     def __init__(self, context: dict | None = None):
         self.context = context or {}
         self.commands: List[object] = []
+        # expose dispatcher in shared context for plugins
+        self.context["dispatcher"] = self
         self.load_modules()
 
     def load_modules(self):
@@ -18,6 +20,8 @@ class Dispatcher:
                 if hasattr(module, "Command"):
                     instance = module.Command(self.context)
                     self.commands.append(instance)
+                    # keep track of loaded command instances
+                    self.context.setdefault("commands", {})[name] = instance
                     print(f"[Lex] Loaded: {module_name}")
                 else:
                     print(f"[Lex] WARNING: {module_name} missing Command class")
