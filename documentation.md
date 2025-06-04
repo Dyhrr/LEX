@@ -6,7 +6,7 @@ implementation.
 
 | Plugin | Triggers | Description |
 |-------|----------|-------------|
-| cleanup.py | `cleanup` | Placeholder for future system clean up tasks. |
+| cleanup.py | `cleanup` | Remove `.tmp` files or clear Python caches. |
 | clipboard.py | `clipboard` | Maintain a simple clipboard history (add, show, paste, clear). |
 | codeassist.py | `codeassist` | Placeholder for coding assistance features. |
 | collab.py | `collab` | Placeholder for collaboration utilities. |
@@ -26,9 +26,9 @@ implementation.
 | notify.py | `notify` | Placeholder for desktop notifications. |
 | personality.py | `personality` | Get or set sarcasm level. |
 | ping.py | `ping`, `are you alive` | Respond with a simple "Pong" message. |
-| pingback.py | `pingback` | Placeholder for network reachability checks. |
+| pingback.py | `pingback` | Check if a host is reachable via `ping`. |
 | proactive.py | `proactive` | Placeholder for proactive suggestions. |
-| profile.py | `profile` | Placeholder for user profile management. |
+| profile.py | `profile` | Manage a simple local profile (`show`, `set`, `delete`). |
 | remind.py | `remind` | Store and list reminders. |
 | schedule.py | `schedule` | Manage dated events in a small local schedule. |
 | search.py | `search`, `find`, `locate` | Search files from a local index. |
