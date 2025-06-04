@@ -46,8 +46,10 @@ class TTS:
             except Exception as e:
                 print(f"[Lex] ElevenLabs error: {e}")
         elif self.engine:
-            def _speak():
-                self.engine.say(text)
-                self.engine.runAndWait()
+            await asyncio.to_thread(self._speak_pyttsx3, text)
 
-            await asyncio.to_thread(_speak)
+    def _speak_pyttsx3(self, text: str) -> None:
+        """Helper to run pyttsx3 in a thread."""
+        if self.engine:
+            self.engine.say(text)
+            self.engine.runAndWait()

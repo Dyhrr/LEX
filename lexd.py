@@ -16,7 +16,6 @@ async def main() -> None:
     while True:
         if settings.get("voice_input"):
             try:
-                cmd = await asyncio.to_thread(transcribe)
                 print(f"> {cmd}")
             except Exception as e:
                 print(f"[Lex] Voice input error: {e}")
