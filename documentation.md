@@ -17,8 +17,6 @@ implementation.
 | health.py | `health`, `stats` | Report basic CPU, RAM and disk usage. |
 | help.py | `help` | List all available command triggers. |
 | history.py | `history`, `context` | Show recent command history and results. |
-| hotkey.py | `hotkey` | Placeholder for custom hotkey support. |
-| hud.py | `hud` | Placeholder for heads-up display features. |
 | info.py | `info` | Display loaded commands and current settings. |
 | knowledge.py | `knowledge` | Search local documentation for matching lines. |
 | learn.py | `learn`, `teach` | Teach Lex new phrases that map to commands. |
@@ -41,5 +39,7 @@ implementation.
 | vault.py | `vault` | Store or retrieve key/value pairs, optionally encrypted. |
 | wakeword.py | `wakeword` | Placeholder to configure wake words. |
 | weather.py | `weather` | Return a weather report (cloud or local). |
-| workflow.py | `workflow` | Placeholder for workflow automation. |
+| hotkey.py | `hotkey` | Register global hotkeys that trigger Lex commands. |
+| hud.py | `hud` | Show a small CPU and memory usage overlay window. |
+| workflow.py | `workflow` | Create and execute multi-step command workflows. |
 
