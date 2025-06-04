@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Test cache
+.pytest_cache/
+
+# Virtual environments
+env/
+venv/
+ENV/
+.venv/
+
+# Settings / logs
+*.log
+*.tmp
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Lex-specific
+memory/*.json
+settings.json  # If you want to prevent your local settings from being committed
