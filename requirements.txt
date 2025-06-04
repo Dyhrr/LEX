@@ -1,2 +1,6 @@
 cryptography
 requests
+SpeechRecognition
+pyttsx3
+pytest
+pytest-asyncio

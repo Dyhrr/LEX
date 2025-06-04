@@ -1,7 +1,13 @@
 import json
 import os
 
-DEFAULTS = {"sarcasm_level": 5, "use_cloud": False}
+DEFAULTS = {
+    "sarcasm_level": 5,
+    "use_cloud": False,
+    "voice_input": True,
+    "voice_output": True,
+    "tts_engine": "pyttsx3",
+}
 
 
 def load_settings(path: str = "settings.json") -> dict:

@@ -24,6 +24,7 @@ Lex is a **modular, locally running assistant** designed to:
 - ✅ Config loader with default injection (`settings.json`)
 - ✅ Fully offline (unless using `define`, which pings an API)
 - ✅ Basic natural language parsing for common phrases
+- ✅ Optional voice input and text-to-speech output
 
 ### Example Commands
 - ✅ `remind me in X minutes to Y` (persistent reminders)
@@ -41,8 +42,8 @@ Lex is a **modular, locally running assistant** designed to:
 ## 🛣 Roadmap
 
 ### 🚧 Short-Term
-- [ ] Voice input via Whisper or `speech_recognition`
-- [ ] Text-to-speech output (pyttsx3, ElevenLabs optional)
+- [x] Voice input via Whisper or `speech_recognition`
+- [x] Text-to-speech output (pyttsx3, ElevenLabs optional)
 - [ ] Plugin hot reloading
 - [ ] Debug dashboard or CLI monitor
 - [ ] Cross-platform support (Linux/macOS compatibility)
