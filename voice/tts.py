@@ -1,3 +1,4 @@
+import asyncio
 import requests
 import pyttsx3
 
@@ -27,7 +28,7 @@ class TTS:
             except Exception as e:
                 print(f"[Lex] pyttsx3 error: {e}")
 
-    def speak(self, text: str) -> None:
+    async def speak(self, text: str) -> None:
         """Speak the given text using the configured engine."""
         if self.settings.get("use_cloud") and self.settings.get("tts_engine") == "elevenlabs":
             api_key = self.settings.get("elevenlabs_api_key")
@@ -35,7 +36,8 @@ class TTS:
                 print("[Lex] ElevenLabs API key missing")
                 return
             try:
-                requests.post(
+                await asyncio.to_thread(
+                    requests.post,
                     "https://api.elevenlabs.io/v1/text-to-speech",
                     headers={"xi-api-key": api_key},
                     json={"text": text},
@@ -44,5 +46,10 @@ class TTS:
             except Exception as e:
                 print(f"[Lex] ElevenLabs error: {e}")
         elif self.engine:
+            await asyncio.to_thread(self._speak_pyttsx3, text)
+
+    def _speak_pyttsx3(self, text: str) -> None:
+        """Helper to run pyttsx3 in a thread."""
+        if self.engine:
             self.engine.say(text)
             self.engine.runAndWait()

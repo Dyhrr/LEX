@@ -10,22 +10,30 @@ class Command:
 
     def __init__(self, context):
         self.context = context
+        self.file = VAULT_FILE
+        self.lock = asyncio.Lock()
 
-    async def _load(self) -> dict:
-        if not os.path.exists(VAULT_FILE):
+    def _read_json(self) -> dict:
+        if not os.path.exists(self.file):
             return {}
         try:
-            async with asyncio.Lock():
-                with open(VAULT_FILE, "r", encoding="utf-8") as fh:
-                    return json.load(fh)
+            with open(self.file, "r", encoding="utf-8") as fh:
+                return json.load(fh)
         except Exception:
             return {}
 
+    def _write_json(self, data: dict) -> None:
+        os.makedirs(os.path.dirname(self.file), exist_ok=True)
+        with open(self.file, "w", encoding="utf-8") as fh:
+            json.dump(data, fh)
+
+    async def _load(self) -> dict:
+        async with self.lock:
+            return await asyncio.to_thread(self._read_json)
+
     async def _save(self, data: dict) -> None:
-        os.makedirs(os.path.dirname(VAULT_FILE), exist_ok=True)
-        async with asyncio.Lock():
-            with open(VAULT_FILE, "w", encoding="utf-8") as fh:
-                json.dump(data, fh)
+        async with self.lock:
+            await asyncio.to_thread(self._write_json, data)
 
     async def run(self, args: str) -> str:
         """Simple vault to store and retrieve key/value pairs."""

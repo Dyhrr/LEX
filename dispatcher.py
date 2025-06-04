@@ -10,8 +10,6 @@ class Dispatcher:
         self.context = context or {}
         self.context["dispatcher"] = self
         self.commands: List[object] = []
-        # expose dispatcher in shared context for plugins
-        self.context["dispatcher"] = self
         self.load_modules()
 
     def load_modules(self):
