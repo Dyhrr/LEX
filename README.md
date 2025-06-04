@@ -53,3 +53,40 @@ Lex is a **modular, locally-running AI assistant** designed to:
 ---
 
 ## 📂 Folder Structure
+LEX/
+├── lexd.py # Main async loop
+├── dispatcher.py # Plugin command router
+├── settings.json # Global config
+├── core/ # Core settings/utils
+├── commands/ # Your plugin modules
+├── memory/ # Persistent storage (reminders, vault)
+├── personality/ # Tone files, sass library
+---
+
+💡 Design Philosophy
+Lex is:
+
+Not cloud-bound
+
+Not polite by default
+
+Not eating 1GB of RAM to tell you what time it is
+
+He’s meant to be:
+
+Expandable
+
+Sarcastically helpful
+
+Dumb enough to stay local, smart enough to feel personal
+
+🔒 Licensing
+MIT License.
+No analytics. No telemetry. Just you, your PC, and a personality-injected assistant with attitude.
+
+🐢 Credits
+Made by Dyhrrr — the kind of dev who sleeps on the floor but builds tools better than your average SaaS startup.
+
+“Built to automate my life, so I can keep ignoring it.”
+
+
