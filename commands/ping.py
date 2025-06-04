@@ -3,6 +3,10 @@ class Command:
 
     def __init__(self, context):
         self.context = context
+        self.settings = context.get("settings", {})
 
     async def run(self, args: str) -> str:
-        return "[Lex] Pong. Unfortunately, yes, I'm still here."
+        from personality.responder import get_response
+
+        reply = get_response("ping", self.settings)
+        return f"[Lex] Pong. {reply}"

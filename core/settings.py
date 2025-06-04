@@ -7,6 +7,9 @@ DEFAULTS = {
     "voice_input": True,
     "voice_output": True,
     "tts_engine": "pyttsx3",
+    "voice_name": "",
+    "voice_rate": 150,
+    "voice_pitch": 50,
 }
 
 

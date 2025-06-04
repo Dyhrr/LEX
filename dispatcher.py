@@ -41,7 +41,10 @@ class Dispatcher:
                 if lowered.startswith(trig):
                     args = text[len(trig):].strip()
                     try:
-                        return await cmd.run(args)
+                        result = await cmd.run(args)
+                        self.context["last_command"] = trig
+                        self.context["last_result"] = result
+                        return result
                     except Exception as e:
                         print(f"[Lex] ERROR in {cmd.__class__.__name__}: {e}")
                         return "[Lex] Something went wrong."
