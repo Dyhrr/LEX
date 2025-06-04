@@ -23,6 +23,8 @@ Lex is a **modular, locally running assistant** designed to:
 - ✅ Async command processing (non-blocking CLI loop)
 - ✅ Config loader with default injection (`settings.json`)
 - ✅ Fully offline (unless using `define`, which pings an API)
+- ✅ Basic natural language parsing for common phrases
+- ✅ Optional voice input and text-to-speech output
 
 ### Example Commands
 - ✅ `remind me in X minutes to Y` (persistent reminders)
@@ -33,14 +35,15 @@ Lex is a **modular, locally running assistant** designed to:
 - ✅ `define <word>` (real API based)
 - ✅ `weather` (mocked for now)
 - ✅ `vault` with AES encryption, master password, and CRUD ops
+- ✅ Natural phrasing like "remind me to drink" or "what's the weather"
 
 ---
 
 ## 🛣 Roadmap
 
 ### 🚧 Short-Term
-- [ ] Voice input via Whisper or `speech_recognition`
-- [ ] Text-to-speech output (pyttsx3, ElevenLabs optional)
+- [x] Voice input via Whisper or `speech_recognition`
+- [x] Text-to-speech output (pyttsx3, ElevenLabs optional)
 - [ ] Plugin hot reloading
 - [ ] Debug dashboard or CLI monitor
 - [ ] Cross-platform support (Linux/macOS compatibility)
