@@ -16,7 +16,8 @@ async def main() -> None:
     while True:
         if settings.get("voice_input"):
             try:
-                cmd = await transcribe()
+                # Pass optional duration if supported, fallback to default
+                cmd = await transcribe(settings.get("transcription_duration", 5))
                 print(f"> {cmd}")
             except Exception as e:
                 print(f"[Lex] Voice input error: {e}")
