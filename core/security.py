@@ -5,8 +5,10 @@ import getpass
 import hashlib
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
+from .logger import get_logger
 
 PASS_FILE = os.path.join("memory", "passphrase.json")
+logger = get_logger()
 
 
 def _read_file() -> tuple[bytes, bytes] | None:
@@ -20,8 +22,8 @@ def _read_file() -> tuple[bytes, bytes] | None:
         stored_hash = bytes.fromhex(data.get("hash", ""))
         if salt and stored_hash:
             return salt, stored_hash
-    except Exception:
-        pass
+    except Exception as e:
+        logger.error("Failed to read passphrase file: %s", e)
     return None
 
 
@@ -60,12 +62,13 @@ def require_vault_key() -> bytes:
                 h = _hash_passphrase(pwd, salt)
                 _write_file(salt, h)
                 return _derive_key(pwd, salt)
-            print("[Lex] Passphrases did not match. Try again.")
+            logger.info("Passphrases did not match. Try again.")
     else:
         salt, stored = data
         for _ in range(3):
             pwd = getpass.getpass("[Lex] Enter passphrase: ")
             if _hash_passphrase(pwd, salt) == stored:
                 return _derive_key(pwd, salt)
-            print("[Lex] Incorrect passphrase.")
+            logger.info("Incorrect passphrase.")
+        logger.error("Too many incorrect passphrase attempts.")
         raise SystemExit("[Lex] Too many incorrect passphrase attempts.")

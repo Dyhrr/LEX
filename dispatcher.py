@@ -1,4 +1,5 @@
 import importlib
+from core.logger import get_logger
 import os
 import pkgutil
 import sys
@@ -7,6 +8,8 @@ from typing import List
 import asyncio
 
 from core.nlp import normalize_input
+
+logger = get_logger()
 
 
 class Dispatcher:
@@ -40,6 +43,7 @@ class Dispatcher:
                 break
         if updated:
             self.load_modules()
+            logger.info("Reloaded command modules")
         return updated
 
     async def watch_modules(self, interval: float = 1.0) -> None:
@@ -69,11 +73,11 @@ class Dispatcher:
                     # Map triggers to command instance for quick lookup
                     for trig in getattr(instance, "trigger", []):
                         self.trigger_map[trig.lower()] = instance
-                    print(f"[Lex] Loaded: {module_name}")
+                    logger.info("Loaded: %s", module_name)
                 else:
-                    print(f"[Lex] WARNING: {module_name} missing Command class")
+                    logger.warning("%s missing Command class", module_name)
             except Exception as e:
-                print(f"[Lex] ERROR loading {module_name}: {e}")
+                logger.error("ERROR loading %s: %s", module_name, e)
 
     async def dispatch(self, input_text: str):
         """Route the given text to the appropriate command."""
@@ -94,7 +98,7 @@ class Dispatcher:
                             del history[:-20]
                     return result
                 except Exception as e:
-                    print(f"[Lex] ERROR in {cmd.__class__.__name__}: {e}")
+                    logger.exception("Error in %s", cmd.__class__.__name__)
                     return "[Lex] Something went wrong."
 
         return "[Lex] I don't know what you want, and I'm too tired to guess."
