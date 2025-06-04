@@ -1,7 +1,8 @@
-metadata = {
-    "name": "ping",
-    "trigger": ["ping", "are you alive"],
-}
+class Command:
+    trigger = ["ping", "are you alive"]
 
-def run(input_text):
-    return "[Lex] Pong. Unfortunately, yes, I'm still here."
+    def __init__(self, context):
+        self.context = context
+
+    async def run(self, args: str) -> str:
+        return "[Lex] Pong. Unfortunately, yes, I'm still here."
