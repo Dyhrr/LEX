@@ -1,12 +1,13 @@
 """Natural language to command string conversion utilities."""
 
 from dataclasses import dataclass
-from typing import Callable, List, Tuple
+from typing import Callable, Iterable, List, Tuple
 
 import json
 import math
 import os
 import re
+from difflib import get_close_matches
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -262,6 +263,22 @@ def regex_fallback(text: str) -> str:
     return REGISTRY.parse(text)
 
 
+def fuzzy_match(text: str, choices: Iterable[str], cutoff: float = 0.75) -> str | None:
+    """Return text with the closest trigger substituted when similar."""
+    matches = get_close_matches(text, choices, n=1, cutoff=cutoff)
+    if matches:
+        return matches[0]
+    parts = text.split(maxsplit=1)
+    if not parts:
+        return None
+    first = parts[0]
+    rest = parts[1] if len(parts) > 1 else ""
+    matches = get_close_matches(first, choices, n=1, cutoff=cutoff)
+    if matches:
+        return f"{matches[0]} {rest}".strip()
+    return None
+
+
 def update_model_on_corrections() -> None:
     """Retrain model if new corrections were recorded."""
     dataset_size = len(DEFAULT_TRAINING_DATA) + len(_load_training_data())
@@ -269,14 +286,21 @@ def update_model_on_corrections() -> None:
         _train_model()
 
 
-def normalize_input(text: str) -> str:
-    """Public API used by the dispatcher. Uses ML classifier with fallback."""
+def normalize_input(text: str, choices: Iterable[str] | None = None) -> str:
+    """Normalize user text into a command using ML, regex and fuzzy matching."""
 
     cleaned = preprocess(text)
     intent, conf = classify_intent(cleaned)
     if intent != "unknown" and conf >= 0.6:
         return intent
-    return regex_fallback(cleaned)
+    result = regex_fallback(cleaned)
+    if result != cleaned:
+        return result
+    if choices:
+        match = fuzzy_match(cleaned, choices)
+        if match:
+            return match
+    return cleaned
 
 
 if __name__ == "__main__":

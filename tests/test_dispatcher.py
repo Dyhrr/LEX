@@ -67,3 +67,15 @@ async def test_dispatcher_features(tmp_path, monkeypatch):
     monkeypatch.setattr(features, "SUGGESTIONS_FILE", file)
     resp = await dispatcher.dispatch("what features are you missing")
     assert "brew coffee" in resp
+
+
+@pytest.mark.asyncio
+async def test_nlp_fuzzy_match(tmp_path):
+    settings = load_settings()
+    dispatcher = Dispatcher({"settings": settings})
+    for cmd in dispatcher.commands:
+        if hasattr(cmd, "file"):
+            cmd.file = tmp_path / "reminders_fuzzy.json"
+    # Intentionally misspelled command
+    resp = await dispatcher.dispatch("remmind me to sleep")
+    assert "Reminder saved" in resp

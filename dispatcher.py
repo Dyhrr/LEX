@@ -77,7 +77,7 @@ class Dispatcher:
 
     async def dispatch(self, input_text: str):
         """Route the given text to the appropriate command."""
-        text = normalize_input(input_text)
+        text = normalize_input(input_text, self.trigger_map.keys())
         lowered = text.lower()
 
         for trig, cmd in self.trigger_map.items():
