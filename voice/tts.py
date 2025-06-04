@@ -1,4 +1,5 @@
 import asyncio
+import sys
 import requests
 import pyttsx3
 
@@ -20,7 +21,9 @@ class TTS:
                 if rate:
                     self.engine.setProperty("rate", rate)
                 pitch = self.settings.get("voice_pitch")
-                if pitch is not None:
+                if pitch is not None and sys.platform != "win32":
+                    # The SAPI5 driver on Windows prints a warning when pitch
+                    # is set, so skip adjustment on that platform.
                     try:
                         self.engine.setProperty("pitch", pitch)
                     except Exception:
