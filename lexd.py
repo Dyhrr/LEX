@@ -25,6 +25,8 @@ async def main() -> None:
                 # Pass optional duration if supported, fallback to default
                 cmd = await transcribe(settings.get("transcription_duration", 5))
                 logger.info("> %s", cmd)
+                if not cmd:
+                    cmd = (await asyncio.to_thread(input, "> ")).strip()
             except Exception as e:
                 logger.error("Voice input error: %s", e)
                 cmd = (await asyncio.to_thread(input, "> ")).strip()
