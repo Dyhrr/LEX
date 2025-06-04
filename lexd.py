@@ -6,6 +6,10 @@ from core.security import require_vault_key
 from dispatcher import Dispatcher
 from voice.recognizer import transcribe
 from voice.tts import TTS
+from core.logger import get_logger
+
+
+logger = get_logger()
 
 
 async def main() -> None:
@@ -14,22 +18,23 @@ async def main() -> None:
     dispatcher = Dispatcher({"settings": settings, "vault_key": key})
     speaker = TTS(settings) if settings.get("voice_output") else None
 
-    print("[Lex] Starting daemon loop...")
+    logger.info("Starting daemon loop...")
     while True:
         if settings.get("voice_input"):
             try:
                 # Pass optional duration if supported, fallback to default
                 cmd = await transcribe(settings.get("transcription_duration", 5))
-                print(f"> {cmd}")
+                logger.info("> %s", cmd)
             except Exception as e:
-                print(f"[Lex] Voice input error: {e}")
+                logger.error("Voice input error: %s", e)
                 cmd = (await asyncio.to_thread(input, "> ")).strip()
         else:
             cmd = (await asyncio.to_thread(input, "> ")).strip()
         if cmd:
+            logger.info("Command received: %s", cmd)
             response = await dispatcher.dispatch(cmd)
             if response:
-                print(response)
+                logger.info("Response: %s", response)
                 if speaker:
                     await speaker.speak(response)
 
@@ -38,4 +43,4 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("[Lex] Shutting down.")
+        logger.info("Shutting down.")
