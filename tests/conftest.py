@@ -4,6 +4,9 @@ import sys
 
 import pytest
 
+# Ensure pytest-asyncio plugin is active so async tests run
+pytest_plugins = ("pytest_asyncio",)
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 
