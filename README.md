@@ -31,7 +31,9 @@ API key and voice ID to `settings.json`:
 ```
 
 Lex will then stream audio from ElevenLabs and play it locally.
+
 Audio playback uses the `simpleaudio` package for cross-platform compatibility.
+
 
 ---
 
