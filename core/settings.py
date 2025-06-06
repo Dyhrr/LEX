@@ -11,6 +11,8 @@ DEFAULTS = {
     "voice_name": "",
     "voice_rate": 150,
     "voice_pitch": 50,
+    "elevenlabs_api_key": "",
+    "elevenlabs_voice_id": "",
 }
 
 

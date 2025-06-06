@@ -10,3 +10,4 @@ joblib
 pyperclip
 psutil
 keyboard
+simpleaudio
