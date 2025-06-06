@@ -19,6 +19,19 @@ Lex is a **modular, locally running assistant** designed to:
 2. `pip install -r requirements.txt`
 3. `python lexd.py`
 
+### ElevenLabs TTS (optional)
+To use the ElevenLabs cloud voices you need to enable cloud mode and add your
+API key and voice ID to `settings.json`:
+
+```json
+"use_cloud": true,
+"tts_engine": "elevenlabs",
+"elevenlabs_api_key": "YOUR_KEY",
+"elevenlabs_voice_id": "VOICE_ID"
+```
+
+Lex will then stream audio from ElevenLabs and play it locally.
+
 ---
 
 ## ✅ What Actually Works Right Now

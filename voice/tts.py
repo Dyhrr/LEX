@@ -1,6 +1,9 @@
 import asyncio
 import sys
+import os
+import tempfile
 import requests
+from playsound import playsound
 import pyttsx3
 
 
@@ -35,17 +38,29 @@ class TTS:
         """Speak the given text using the configured engine."""
         if self.settings.get("use_cloud") and self.settings.get("tts_engine") == "elevenlabs":
             api_key = self.settings.get("elevenlabs_api_key")
-            if not api_key:
-                print("[Lex] ElevenLabs API key missing")
+            voice_id = self.settings.get("elevenlabs_voice_id")
+            if not api_key or not voice_id:
+                print("[Lex] ElevenLabs API key or voice ID missing")
                 return
             try:
-                await asyncio.to_thread(
+                response = await asyncio.to_thread(
                     requests.post,
-                    "https://api.elevenlabs.io/v1/text-to-speech",
-                    headers={"xi-api-key": api_key},
+                    f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream",
+                    headers={"xi-api-key": api_key, "Content-Type": "application/json"},
                     json={"text": text},
                     timeout=10,
                 )
+                if response.ok:
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
+                        tmp.write(response.content)
+                        tmp_path = tmp.name
+                    await asyncio.to_thread(playsound, tmp_path)
+                    try:
+                        os.remove(tmp_path)
+                    except Exception:
+                        pass
+                else:
+                    print(f"[Lex] ElevenLabs error: {response.status_code}")
             except Exception as e:
                 print(f"[Lex] ElevenLabs error: {e}")
         elif self.engine:
