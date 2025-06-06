@@ -3,7 +3,7 @@ import sys
 import os
 import tempfile
 import requests
-from playsound import playsound
+import simpleaudio
 import pyttsx3
 
 
@@ -25,8 +25,6 @@ class TTS:
                     self.engine.setProperty("rate", rate)
                 pitch = self.settings.get("voice_pitch")
                 if pitch is not None and sys.platform != "win32":
-                    # The SAPI5 driver on Windows prints a warning when pitch
-                    # is set, so skip adjustment on that platform.
                     try:
                         self.engine.setProperty("pitch", pitch)
                     except Exception:
@@ -46,15 +44,21 @@ class TTS:
                 response = await asyncio.to_thread(
                     requests.post,
                     f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream",
-                    headers={"xi-api-key": api_key, "Content-Type": "application/json"},
+                    headers={
+                        "xi-api-key": api_key,
+                        "Content-Type": "application/json",
+                        "Accept": "audio/wav",
+                    },
                     json={"text": text},
                     timeout=10,
                 )
                 if response.ok:
-                    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
                         tmp.write(response.content)
                         tmp_path = tmp.name
-                    await asyncio.to_thread(playsound, tmp_path)
+                    wave_obj = await asyncio.to_thread(simpleaudio.WaveObject.from_wave_file, tmp_path)
+                    play_obj = wave_obj.play()
+                    await asyncio.to_thread(play_obj.wait_done)
                     try:
                         os.remove(tmp_path)
                     except Exception:
