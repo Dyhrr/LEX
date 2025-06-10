@@ -1,27 +1,24 @@
-# 🧠 Lex – Your Personal, Local-First, Sarcastic AI Assistant
+# 🧠 Lex – Your Personal, Local-First AI Assistant
 
-Lex is a small desktop assistant that lives entirely on your PC. It won't phone
-home unless you explicitly allow it. Think **Jarvis** with more attitude and a
-hard rule against cloud dependency.
+Lex is a disciplined desktop assistant that operates entirely on your PC. Designed for precision, privacy, and control, Lex executes tasks, manages routines, and automates daily functions—all without relying on the cloud unless explicitly permitted.
 
----
+Think **Jarvis**—focused, secure, and capable. A digital butler designed to support your work, your schedule, and your systems.
 
 ## ⚙️ What It Is
 
-Lex is a **modular, locally running assistant** designed to:
-- Stay offline unless *you* say otherwise
-- Be extended through simple plugin commands
-- Talk back with sarcastic, human-like sass
-- Automate boring tasks so you don’t forget to drink water (again)
+Lex is a **modular, locally running assistant** developed to:
+- Remain fully offline unless cloud access is explicitly enabled
+- Execute custom commands via lightweight plugin modules
+- Automate routine or repetitive actions efficiently
+- Assist in day-to-day workflows with voice or text input
 
 ## Installation
-1. Clone the repo
+1. Clone the repository
 2. `pip install -r requirements.txt`
 3. `python lexd.py`
 
 ### ElevenLabs TTS (optional)
-To use the ElevenLabs cloud voices you need to enable cloud mode and add your
-API key and voice ID to `settings.json`:
+To use cloud-based text-to-speech with ElevenLabs, enable `use_cloud` and configure your API credentials in `settings.json`:
 
 ```json
 "use_cloud": true,
@@ -30,76 +27,60 @@ API key and voice ID to `settings.json`:
 "elevenlabs_voice_id": "VOICE_ID"
 ```
 
-Lex will then stream audio from ElevenLabs and play it locally.
+Lex will then stream and play back voice responses from ElevenLabs.
 
-Audio playback uses the `simpleaudio` package for cross-platform compatibility.
+Audio playback is handled via the `simpleaudio` package for maximum cross-platform support.
 
-
----
-
-## ✅ What Actually Works Right Now
+## ✅ What Works Now
 
 ### Functional Core
-- ✅ Modular plugin loader via `dispatcher.py`
-- ✅ Async command processing (non-blocking CLI loop)
-- ✅ Config loader with default injection (`settings.json`)
-- ✅ Passphrase-protected startup with encrypted vault
-- ✅ Fully offline (unless using `define`, which pings an API)
-- ✅ Expanded natural language parsing for common phrases
-- ✅ Fuzzy matching for misspelled commands
-- ✅ Optional voice input and text-to-speech output
+- ✅ Modular plugin loader (`dispatcher.py`)
+- ✅ Async command loop (non-blocking architecture)
+- ✅ Config loader with defaults (`settings.json`)
+- ✅ Encrypted passphrase-protected vault
+- ✅ Fully offline functionality (API access only when allowed)
+- ✅ Fuzzy matching and natural phrase interpretation
+- ✅ Optional voice input + TTS output
 
-### Example Commands
-- ✅ `remind me in X minutes to Y` (persistent reminders)
+### Supported Commands
+- ✅ `remind me in X minutes to Y` (with persistence)
 - ✅ `open notepad`, `search for cats`
-- ✅ `kill discord` (taskkill whitelist-safe)
+- ✅ `kill discord` (whitelisted safe process management)
 - ✅ `generate password`, `generate uuid`
-- ✅ `flip a coin`, `roast me`, `compliment me`
-- ✅ `define <word>` (real API based)
-- ✅ `weather` (mocked for now)
-- ✅ `vault` with passphrase-encrypted storage
-- ✅ Natural phrasing like "can you remind me to drink" or "how's the weather"
-- ✅ Teach Lex new phrases with `learn <phrase> as <command>`
-- ✅ `search index` then `search <file>` to locate files
-- ✅ `clipboard add <text>` and `clipboard paste`
-- ✅ `notes add <text>` for a quick local wiki
-- ✅ `health` to check CPU, RAM and disk usage
-
----
+- ✅ `flip a coin`, `define <word>`
+- ✅ `weather` (mocked placeholder)
+- ✅ Secure vault for sensitive data
+- ✅ Clipboard and notes system
+- ✅ Local system health monitoring (`health`)
 
 ## 🛣 Roadmap
 
 ### 🚧 Short-Term
-- [x] Voice input via Whisper or `speech_recognition`
-- [x] Text-to-speech output (pyttsx3, ElevenLabs optional)
+- [x] Whisper-based or SpeechRecognition voice input
+- [x] TTS via pyttsx3 or ElevenLabs
 - [ ] Plugin hot reloading
-- [ ] Debug dashboard or CLI monitor
-- [ ] Cross-platform support (Linux/macOS compatibility)
+- [ ] Debug CLI or optional UI panel
+- [ ] Cross-platform polish (Linux/macOS support)
 
-### 🧠 Future Ideas
-- [ ] Routine learning
-- [ ] Context tracking for multi-step conversations
-- [ ] Plugin marketplace or repo sync
-- [ ] Sarcasm tone slider in `settings.json` (because chaos)
-
----
+### 🧠 Future Goals
+- [ ] Routine pattern recognition
+- [ ] Multi-step conversation tracking
+- [ ] Plugin syncing or community library
+- [ ] Dynamic personality profiles
 
 ## 📂 Folder Structure
 LEX/
-├── lexd.py           # Main async loop
-├── dispatcher.py     # Plugin command router
-├── settings.json     # Global config
-├── core/             # Core settings/utils
-├── commands/         # Your plugin modules
-├── memory/           # Persistent storage (reminders, vault)
-├── personality/      # Tone files, sass library
----
+├── lexd.py           # Core event loop  
+├── dispatcher.py     # Plugin command router  
+├── settings.json     # Global configuration  
+├── core/             # Utilities and shared logic  
+├── commands/         # Modular plugin commands  
+├── memory/           # Persistence layer  
+├── personality/      # (Optional) tone or behavioral modifiers  
 
-See [AGENTS.md](AGENTS.md) for additional contributor notes and advanced usage tips.
+## 🧩 Plugin System
 
-## 🧩 Commands & Plugins
-
-All plugins live in the `commands/` folder. Any module that exposes a `Command` class with a `trigger` list and an asynchronous `run()` method is picked up automatically by `dispatcher.py`.
+All plugins reside in the `commands/` folder. The dispatcher imports any module exposing a `Command` class with a `trigger` list and an async `run()` method.
 
 ```python
 class Command:
@@ -109,50 +90,18 @@ class Command:
         self.context = context
 
     async def run(self, args: str) -> str:
-        return "Pong!"
-
-
-All plugins live in the `commands/` folder. The dispatcher scans that directory
-at startup and imports any module exposing a `Command` class. Each command lists
-one or more trigger words in `trigger` and implements an asynchronous `run()`
-method.
-
-```python
-class Command:
-    trigger = ["ping"]
-
-    def __init__(self, context):
-        self.context = context
-
-    async def run(self, args: str) -> str:
-        return "Pong!"
+        return "Pong."
 ```
 
-Responses are returned as plain text for now. Voice input and text-to-speech are
-planned but optional—the command system works fine without them.
+## 🧭 Design Principles
 
-When writing a plugin, keep it async-friendly. Long-running work should be done
-with asyncio-compatible libraries to avoid blocking the event loop. The context
-dict passed to each `Command` can be used to access settings or share state.
+- **Local-first**: All logic and data remain offline by default  
+- **Lightweight**: Designed for idle efficiency with low resource usage  
+- **Modular**: Extendable via drop-in plugins  
+- **Respectful**: Secure, quiet, and efficient—always serving, never spying
 
+## 🔒 License
+MIT. No telemetry, no data collection, no analytics. Just you and your system.
 
-💡 **Design Philosophy**
-Lex is:
-
-- Local-first—no cloud calls unless `use_cloud` is enabled
-- Sarcastic by default
-- Lightweight (no gigabyte RAM usage just to say "hi")
-
-He’s meant to be:
-
-- Expandable through simple plugins
-- Helpful with a side of attitude
-- Dumb enough to stay local, smart enough to feel personal
-
-🔒 **License**
-MIT License. No analytics, no telemetry—just you, your PC, and an assistant with attitude.
-
-🐢 **Credits**
-Created by Dyhrrr, the sort of developer who'd rather automate life than organize it.
-
-"Built to automate my life, so I can keep ignoring it."
+## 🧾 Author
+Created by Dyhrrr—a developer dedicated to building tools that serve with discretion and reliability.
