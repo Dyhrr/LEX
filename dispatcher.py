@@ -81,6 +81,8 @@ class Dispatcher:
 
     async def dispatch(self, input_text: str):
         """Route the given text to the appropriate command."""
+        # normalize_input uses difflib.get_close_matches under the hood for
+        # fuzzy trigger substitution when the user mistypes a command
         text = normalize_input(input_text, self.trigger_map.keys())
         lowered = text.lower()
 
