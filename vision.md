@@ -21,7 +21,7 @@ Lex is not just a desktop assistant. He is the foundation of a digital ecosystem
 ### Phase 2: Life Awareness
 - Calendar integration (Google/ICS)
 - Contacts + SMS (ADB sync / local bridge)
-- Context engine for short-term memory
+- Context engine for short-term memory (SQLite + simple vector store)
 - Routine tracker and behavioral flags
 
 ### Phase 3: System Integration
@@ -32,9 +32,9 @@ Lex is not just a desktop assistant. He is the foundation of a digital ecosystem
 
 ### Phase 4: Mobile Companion
 - Lightweight Android app
-- Remote command sync
+- Remote command sync (HTTP/WebSocket API)
 - Mic passthrough for voice input
-- Secure peer-to-peer sync
+- Secure peer-to-peer sync (WebRTC or libp2p based)
 
 ### Phase 5: Adaptive Intelligence
 - Behavior prediction
