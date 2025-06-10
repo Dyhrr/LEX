@@ -13,12 +13,14 @@ Lex is a **modular, locally running assistant** developed to:
 - Assist in day-to-day workflows with voice or text input
 
 ## Installation
+Lex targets **Python 3.11+**. Once you have the correct version installed:
 1. Clone the repository
 2. `pip install -r requirements.txt`
 3. `python lexd.py`
 
 ### ElevenLabs TTS (optional)
-To use cloud-based text-to-speech with ElevenLabs, enable `use_cloud` and configure your API credentials in `settings.json`:
+Lex can speak using the local `pyttsx3` engine or stream audio from ElevenLabs.
+To enable cloud-based text-to-speech, set `use_cloud` to `true` and configure your credentials in `settings.json`:
 
 ```json
 "use_cloud": true,
@@ -31,13 +33,16 @@ Lex will then stream and play back voice responses from ElevenLabs.
 
 Audio playback is handled via the `simpleaudio` package for maximum cross-platform support.
 
+### Voice Input (optional)
+Lex listens using `speech_recognition`. When the Whisper package is installed, it falls back to Whisper for better accuracy. If `use_cloud` is `false`, all recognition happens locally; otherwise you may configure a cloud recognizer in the future.
+
 ## ✅ What Works Now
 
 ### Functional Core
 - ✅ Modular plugin loader (`dispatcher.py`)
 - ✅ Async command loop (non-blocking architecture)
 - ✅ Config loader with defaults (`settings.json`)
-- ✅ Encrypted passphrase-protected vault
+- ✅ Encrypted passphrase-protected vault (Fernet-encrypted `memory/vault.json` with PBKDF2-derived key)
 - ✅ Fully offline functionality (API access only when allowed)
 - ✅ Fuzzy matching and natural phrase interpretation
 - ✅ Optional voice input + TTS output
@@ -93,12 +98,27 @@ class Command:
         return "Pong."
 ```
 
+Each command receives a **context** dictionary. It exposes:
+- `settings`: parsed `settings.json`
+- `logger`: the shared logger from `core/logger.py`
+- `dispatcher`: the dispatcher instance (for hot reloading or dispatching new commands)
+- `history`: recent `(command, result)` tuples
+Additional keys may be added by future plugins.
+
+The dispatcher can optionally watch for file changes and reload plugins on the fly when `Dispatcher.watch_modules()` is running.
+
+Plugins are expected to be well-behaved: only whitelisted process names may be terminated and file access should stay within the project directory unless explicitly allowed.
+
 ## 🧭 Design Principles
 
-- **Local-first**: All logic and data remain offline by default  
-- **Lightweight**: Designed for idle efficiency with low resource usage  
+- **Local-first**: All logic and data remain offline by default
+- **Opt-in cloud**: Network APIs only activate when `use_cloud` is true in `settings.json` (set it to `false` for an offline-only setup)
+- **Lightweight**: Designed for idle efficiency with low resource usage
 - **Modular**: Extendable via drop-in plugins  
 - **Respectful**: Secure, quiet, and efficient—always serving, never spying
+
+## 🧪 Testing
+Run the test suite with `pytest tests/` to validate plugins and the dispatcher. New commands should include corresponding tests in `tests/`.
 
 ## 🔒 License
 MIT. No telemetry, no data collection, no analytics. Just you and your system.
