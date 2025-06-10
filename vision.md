@@ -35,6 +35,10 @@ Lex is not just a desktop assistant. He is the foundation of a digital ecosystem
 - Remote command sync (HTTP/WebSocket API)
 - Mic passthrough for voice input
 - Secure peer-to-peer sync (WebRTC or libp2p based)
+- Planned encryption via TLS with optional QR token exchange for first-time
+  pairing
+- Communication model will use a persistent WebSocket channel for command and
+  event updates
 
 ### Phase 5: Adaptive Intelligence
 - Behavior prediction
