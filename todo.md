@@ -1,72 +1,73 @@
-# TODO Modules
+# Lex TODO — Dev Tasks & Roadmap
 
-🔥 Critical (Breaks or Blocks UX)
- Add exception handling to all Command.run() calls
+---
 
-Prevent full crash when one plugin explodes
+## 🔥 Critical (Breaks UX or Causes Crashes)
 
- Implement plugin sandboxing
+- [ ] Add exception handling to all `Command.run()` calls  
+      → Prevent whole-system crash when a plugin explodes
 
-Limit damage scope of a single broken plugin (timeouts? fallbacks?)
+- [ ] Implement plugin sandboxing  
+      → Timeout or fallback if a plugin stalls or fails
 
- Harden dangerous commands (e.g. kill)
+- [ ] Harden dangerous commands (e.g. `kill`)  
+      → Add opt-in flags or explicit confirmations via settings
 
-Add user confirmation step or require explicit opt-in in settings.json
+- [ ] Improve `context` structure  
+      → Avoid dumping everything into one dict — separate into `system`, `user`, `plugin`
 
- Improve context structure
+---
 
-Avoid junk-drawer context usage — use sub-dicts (system, user, plugin)
+## 🧠 Architecture & Core Improvements
 
-🧠 Architecture Improvements
+- [ ] Refactor `dispatcher` to support `Command.help()`  
+      → Built-in `help`, `list`, `describe <command>` support
 
+- [ ] Replace plugin polling with `watchdog` FS events  
+      → Real-time hot reload for plugins
 
- Refactor dispatcher to include Command.help() support
+- [ ] Split CLI vs Voice mode with flags  
+      → Remove auto-fallback behavior, allow deterministic launch mode
 
-Add built-in help, list, describe <command>
+---
 
- Use watchdog for live plugin reload instead of polling
+## 🧪 Testing & Stability
 
-Cleaner, event-driven reload logic for hot-swapping
+- [ ] Add unit tests for dispatcher routing
+- [ ] Write basic test scaffolds for all plugins
+- [ ] Mock voice input / TTS output for CI testing
+- [ ] Add `lex doctor` diagnostic command  
+      → Check for missing deps, bad config, incompatible Python, etc.
 
- Split voice/console modes into flags
+---
 
-Allow fixed mode selection instead of weird fallbacks
+## 🔊 UX & Quality-of-Life
 
-🧪 Testing & Stability
- Add unit tests for dispatcher routing
+- [ ] Command auto-suggest on unknown triggers  
+      → “Did you mean: remind?”
 
- Write test scaffolds for all plugins
+- [ ] Local command usage logging + frequency analytics  
+      → View most-used plugins and drop unused ones
 
- Mock voice input + TTS output for CI runs
+- [ ] Add dynamic personality loading  
+      → Load `/personality/*.json` at runtime (switch tone mid-session)
 
- Add lex doctor to diagnose missing deps or invalid config
+---
 
-🔊 UX & Quality-of-Life
- Command auto-suggest on unknown trigger
+## 🌍 Optional / Long-Term
 
-“Did you mean: 'remind'?”
+- [ ] Community plugin loader (opt-in, sandboxed)
+- [ ] Mobile bridge via ADB or local tunnel
+- [ ] GPT integration via Ollama or cloud fallback
+- [ ] Simple habit/routine memory for learning user behavior
 
+---
 
+## 🧾 Housekeeping / Dev Quality
 
- Command usage logging + analytics (local only)
+- [ ] Add `.env.example` + load secrets from env properly  
+      → Avoid leaking ElevenLabs keys in `settings.json`
 
-View what you use most and remove junk
-
- Dynamic personality loading (/personality/*.json)
-
-Switch tone/response style mid-run
-
-🌍 Optional/Long-Term
- Community plugin system (opt-in)
-
- Mobile bridge (via adb or local server)
-
- Support for GPT calls via local Ollama or cloud fallback
-
- Routine learning (simple habit memory)
-
-🧾 Housekeeping
-
- Add .env.example and better key loading (avoid hardcoding ElevenLabs keys in settings.json)
-
- Document every plugin with docstrings + markdown
+- [ ] Document each plugin:
+    - Docstrings for internal help
+    - Markdown table for plugin overview
