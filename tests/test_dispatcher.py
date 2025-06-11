@@ -101,3 +101,19 @@ async def test_command_timeout(monkeypatch):
 
     result = await dispatcher.dispatch("hang")
     assert "timed out" in result.lower()
+
+
+@pytest.mark.asyncio
+async def test_dispatcher_suggests_command():
+    dispatcher = Dispatcher()
+    resp = await dispatcher.dispatch("pim")
+    assert "did you mean" in resp.lower()
+
+
+@pytest.mark.asyncio
+async def test_usage_tracking(tmp_path):
+    dispatcher = Dispatcher({"usage_file": tmp_path / "usage.json"})
+    await dispatcher.dispatch("ping")
+    await dispatcher.dispatch("ping")
+    resp = await dispatcher.dispatch("usage")
+    assert "ping: 2" in resp

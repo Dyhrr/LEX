@@ -37,6 +37,7 @@ implementation.
 | tone.py | `tone` | Adjust voice name, rate and pitch. |
 | tools.py | `tools` | Generate UUIDs or random passwords. |
 | translate.py | `translate` | Translate text using a small offline dictionary or cloud API. |
+| usage.py | `usage` | Show command usage statistics. |
 | vault.py | `vault` | Store or retrieve key/value pairs, optionally encrypted. |
 | wakeword.py | `wakeword` | Listen for custom wake words to trigger commands. |
 | weather.py | `weather` | Return a weather report (cloud or local). |
