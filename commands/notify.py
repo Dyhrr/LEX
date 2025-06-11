@@ -21,6 +21,7 @@ class Command:
         self.context = context
         self.file = NOTIFY_FILE
         self._cache: list[dict] | None = None
+        self.lock = asyncio.Lock()
 
     # ---------------------------------------------------------
     # Persistence helpers
@@ -71,7 +72,8 @@ class Command:
     async def run(self, args: str) -> str:
         await asyncio.sleep(0)
         tokens = args.split()
-        history = self._load()
+        async with self.lock:
+            history = await asyncio.to_thread(self._load)
         if not tokens:
             return "[Lex] Use 'notify <message>', 'list', or 'clear'."
 
@@ -80,18 +82,24 @@ class Command:
         if cmd == "list":
             if not history:
                 return "[Lex] No notifications."
-            return "\n".join(f"{n['time']} - {n['msg']}" for n in history[-5:])
+            return "\n".join(
+                f"{n['time']} - {n['msg']}" for n in history[-5:]
+            )
 
         if cmd == "clear":
             history.clear()
-            self._save()
+            async with self.lock:
+                await asyncio.to_thread(self._save)
             return "[Lex] Cleared notifications."
 
         message = args.strip()
         if not message:
             return "[Lex] Notification text required."
         self._send_os_notification(message)
-        history.append({"time": datetime.now().isoformat(timespec="seconds"), "msg": message})
+        history.append(
+            {"time": datetime.now().isoformat(timespec="seconds"), "msg": message}
+        )
         history[:] = history[-50:]
-        self._save()
+        async with self.lock:
+            await asyncio.to_thread(self._save)
         return f"[Lex] Notified: {message}"

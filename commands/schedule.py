@@ -15,6 +15,7 @@ class Command:
     def __init__(self, context):
         self.context = context
         self.file = SCHEDULE_FILE
+        self.lock = asyncio.Lock()
 
     def _load(self) -> list[dict]:
         if self.file.exists():
@@ -35,7 +36,8 @@ class Command:
         await asyncio.sleep(0)
         tokens = args.split()
         if not tokens or tokens[0] == "list":
-            events = self._load()
+            async with self.lock:
+                events = await asyncio.to_thread(self._load)
             if not events:
                 return "[Lex] No events scheduled."
             events.sort(key=lambda e: e.get("time", ""))
@@ -53,9 +55,10 @@ class Command:
             except ValueError:
                 return "[Lex] Use 'YYYY-MM-DD HH:MM' for the date/time."
             text = " ".join(tokens[3:]) or "(no details)"
-            events = self._load()
-            events.append({"time": dt.strftime("%Y-%m-%d %H:%M"), "text": text})
-            self._save(events)
+            async with self.lock:
+                events = await asyncio.to_thread(self._load)
+                events.append({"time": dt.strftime("%Y-%m-%d %H:%M"), "text": text})
+                await asyncio.to_thread(self._save, events)
             return f"[Lex] Event added for {dt_str}."
 
         if cmd == "remove" and len(tokens) >= 2:
@@ -63,15 +66,17 @@ class Command:
                 idx = int(tokens[1]) - 1
             except ValueError:
                 return "[Lex] Give me a valid number to remove."
-            events = self._load()
-            if 0 <= idx < len(events):
-                removed = events.pop(idx)
-                self._save(events)
-                return f"[Lex] Removed: {removed['text']}"
-            return "[Lex] No event with that number."
+            async with self.lock:
+                events = await asyncio.to_thread(self._load)
+                if 0 <= idx < len(events):
+                    removed = events.pop(idx)
+                    await asyncio.to_thread(self._save, events)
+                    return f"[Lex] Removed: {removed['text']}"
+                return "[Lex] No event with that number."
 
         if cmd == "clear":
-            self._save([])
+            async with self.lock:
+                await asyncio.to_thread(self._save, [])
             return "[Lex] Schedule cleared."
 
         return (

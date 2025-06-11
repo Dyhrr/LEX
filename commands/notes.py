@@ -14,6 +14,7 @@ class Command:
     def __init__(self, context):
         self.context = context
         self.file = NOTES_FILE
+        self.lock = asyncio.Lock()
 
     def _load(self) -> list[str]:
         if self.file.exists():
@@ -33,17 +34,20 @@ class Command:
         await asyncio.sleep(0)
         tokens = args.split(maxsplit=1)
         if not tokens:
-            notes = self._load()
+            async with self.lock:
+                notes = await asyncio.to_thread(self._load)
             if not notes:
                 return "[Lex] No notes."
             return "\n".join(f"{i+1}. {n}" for i, n in enumerate(notes))
         cmd = tokens[0]
         if cmd == "add" and len(tokens) > 1:
-            notes = self._load()
-            notes.append(tokens[1])
-            self._save(notes)
+            async with self.lock:
+                notes = await asyncio.to_thread(self._load)
+                notes.append(tokens[1])
+                await asyncio.to_thread(self._save, notes)
             return "[Lex] Note added."
         if cmd == "clear":
-            self._save([])
+            async with self.lock:
+                await asyncio.to_thread(self._save, [])
             return "[Lex] Notes cleared."
         return "[Lex] Use 'notes add <text>' or 'notes' to list."
