@@ -1,7 +1,10 @@
+"""Get or set sarcasm level."""
+
 import asyncio
 
 
 class Command:
+    description = "Get or set sarcasm level."
     trigger = ["personality"]
 
     def __init__(self, context):

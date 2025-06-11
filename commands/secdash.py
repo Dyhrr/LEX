@@ -7,6 +7,7 @@ import psutil
 
 
 class Command:
+    description = "Show active network connections and kill by PID."
     trigger = ["secdash"]
 
     def __init__(self, context):

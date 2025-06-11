@@ -1,3 +1,5 @@
+"""Show a small CPU and memory usage overlay window."""
+
 import asyncio
 import threading
 import tkinter as tk
@@ -5,6 +7,7 @@ import psutil
 
 
 class Command:
+    description = "Show a small CPU and memory usage overlay window."
     """Toggle a simple system stats heads-up display."""
 
     trigger = ["hud"]

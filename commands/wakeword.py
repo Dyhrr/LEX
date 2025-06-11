@@ -14,6 +14,7 @@ WAKE_FILE = Path("memory") / "wakewords.json"
 
 
 class Command:
+    description = "Listen for custom wake words to trigger commands."
     trigger = ["wakeword"]
 
     def __init__(self, context):

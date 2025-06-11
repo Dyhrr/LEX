@@ -1,3 +1,5 @@
+"""Store short notes locally."""
+
 import asyncio
 import json
 import os
@@ -7,6 +9,7 @@ NOTES_FILE = Path("memory") / "notes.json"
 
 
 class Command:
+    description = "Store short notes locally."
     """Store short notes locally."""
 
     trigger = ["notes", "note"]

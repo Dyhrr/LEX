@@ -1,3 +1,5 @@
+"""Show command usage statistics."""
+
 import asyncio
 import json
 from pathlib import Path
@@ -5,6 +7,7 @@ from pathlib import Path
 USAGE_FILE = Path("memory") / "usage.json"
 
 class Command:
+    description = "Show command usage statistics."
     """Display command usage statistics."""
 
     trigger = ["usage"]

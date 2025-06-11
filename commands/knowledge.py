@@ -8,6 +8,7 @@ DOC_FILES = [Path("README.md"), Path("documentation.md"), Path("What they do")]
 
 
 class Command:
+    description = "Search local documentation for matching lines."
     """Simple knowledge base query from bundled docs."""
 
     trigger = ["knowledge"]

@@ -1,3 +1,5 @@
+"""Manage a simple local profile (`show`, `set`, `delete`)."""
+
 import asyncio
 import json
 import os
@@ -8,6 +10,7 @@ PROFILE_FILE = Path("memory") / "profile.json"
 
 
 class Command:
+    description = "Manage a simple local profile (`show`, `set`, `delete`)."
     """Manage a simple local user profile."""
 
     trigger = ["profile"]

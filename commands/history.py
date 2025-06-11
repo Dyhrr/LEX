@@ -1,7 +1,10 @@
+"""Show recent command history and results."""
+
 import asyncio
 
 
 class Command:
+    description = "Show recent command history and results."
     """Show recent command history and results."""
 
     trigger = ["history", "context"]

@@ -1,3 +1,5 @@
+"""List all available command triggers."""
+
 import asyncio
 import re
 from pathlib import Path
@@ -6,6 +8,7 @@ DOCS_FILE = Path("documentation.md")
 
 
 class Command:
+    description = "List all available command triggers."
     trigger = ["help"]
 
     def __init__(self, context):

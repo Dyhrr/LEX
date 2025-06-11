@@ -10,6 +10,7 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 
 class Command:
+    description = "Share a folder over HTTP to quickly collaborate."
     trigger = ["collab"]
 
     def __init__(self, context):

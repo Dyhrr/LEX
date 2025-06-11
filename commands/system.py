@@ -1,3 +1,5 @@
+"""Show basic system information."""
+
 import asyncio
 import platform
 import os
@@ -5,6 +7,7 @@ import shutil
 
 
 class Command:
+    description = "Show basic system information."
     trigger = ["system"]
 
     def __init__(self, context):

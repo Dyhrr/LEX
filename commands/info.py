@@ -1,7 +1,10 @@
+"""Display loaded commands and current settings."""
+
 import asyncio
 
 
 class Command:
+    description = "Display loaded commands and current settings."
     trigger = ["info"]
 
     def __init__(self, context):

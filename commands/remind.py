@@ -1,9 +1,12 @@
+"""Store and list reminders."""
+
 import asyncio
 import json
 import os
 
 
 class Command:
+    description = "Store and list reminders."
     trigger = ["remind"]
 
     def __init__(self, context):

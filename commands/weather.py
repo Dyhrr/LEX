@@ -1,4 +1,7 @@
+"""Return a weather report (cloud or local)."""
+
 class Command:
+    description = "Return a weather report (cloud or local)."
     trigger = ["weather"]
 
     def __init__(self, context):
@@ -13,7 +16,7 @@ class Command:
         import asyncio, requests
         url = f"https://wttr.in/{location}?format=3"
         try:
-            resp = await asyncio.to_thread(requests.get, url, timeout=5)
+            resp = await asyncio.to_thread(requests.get, url, timeout=3)
             return resp.text.strip()
         except Exception as e:
             return f"[Lex] Couldn't fetch weather for {location}: {e}"

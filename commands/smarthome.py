@@ -7,6 +7,7 @@ import requests
 
 
 class Command:
+    description = "Control lights, thermostat, or scenes via Home Assistant."
     trigger = ["smarthome"]
 
     def __init__(self, context):

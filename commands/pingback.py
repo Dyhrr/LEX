@@ -1,8 +1,11 @@
+"""Check if a host is reachable via `ping`."""
+
 import asyncio
 import platform
 
 
 class Command:
+    description = "Check if a host is reachable via `ping`."
     """Check network reachability for a host."""
 
     trigger = ["pingback"]

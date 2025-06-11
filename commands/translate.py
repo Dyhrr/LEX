@@ -11,6 +11,7 @@ OFFLINE_DICT = {
 
 
 class Command:
+    description = "Translate text using a small offline dictionary or cloud API."
     trigger = ["translate"]
 
     def __init__(self, context):

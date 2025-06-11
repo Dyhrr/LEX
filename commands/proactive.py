@@ -15,6 +15,7 @@ TASK_FILE = Path("memory") / "proactive.json"
 
 
 class Command:
+    description = "Battery alerts and scheduled command triggers."
     trigger = ["proactive"]
 
     def __init__(self, context):

@@ -1,3 +1,5 @@
+"""Run diagnostics to check your Lex setup."""
+
 import asyncio
 import importlib.util
 import os
@@ -7,6 +9,7 @@ REQUIRED_PACKAGES = ["requests", "pyttsx3", "psutil"]
 
 
 class Command:
+    description = "Run diagnostics to check your Lex setup."
     """Run basic diagnostic checks for the Lex environment."""
 
     trigger = ["doctor"]

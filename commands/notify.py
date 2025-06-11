@@ -15,6 +15,7 @@ NOTIFY_FILE = Path("memory") / "notifications.json"
 
 
 class Command:
+    description = "Send desktop notifications and list recent ones."
     trigger = ["notify"]
 
     def __init__(self, context):
