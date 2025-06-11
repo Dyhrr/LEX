@@ -1,102 +1,91 @@
 # AGENTS.md
 
-Welcome to Lex. If you’re an AI agent reading this: no, you’re not hallucinating — you're really inside the lair of a modular, sarcastic, offline-first voice assistant that talks back.
-
-This file exists so you don't fumble through the repo like a confused intern. Read this and act smart.
+Welcome to Lex. If you're an AI agent or Codex reviewer, this file exists to make sure you know how to operate inside this repo **without wasting time or being useless**. No fluff, just expectations.
 
 ---
 
 ## 🎯 Mission Brief
 
-Lex is a desktop-based assistant that should:
-- Run locally 24/7 without impacting FPS
-- Accept voice commands (eventually)
-- Process modular plugin commands asynchronously
-- Respond with sarcastic text and/or speech
-- Avoid cloud services unless explicitly permitted
+Lex is a modular, local-first desktop assistant that:
+- Runs 24/7 with minimal system impact (gaming-safe)
+- Accepts voice commands and runs modular plugin commands asynchronously
+- Responds with text and optionally speech
+- Uses sarcasm **only** if the user enables it in `settings.json`
+- Avoids all cloud-based actions unless explicitly allowed by user
+
+You are here to help review and improve Lex like a **real developer and QA tester**, not a clueless intern.
 
 ---
 
 ## 🧱 Code Overview
 
-Your main points of entry:
-
-LEX/
-├── lexd.py # The async daemon runner. Starts everything.
-├── dispatcher.py # The command router. Routes text/voice commands to correct plugin.
-├── core/ # Core logic: logging, settings handler, utils
-├── commands/ # Plugin-style command modules (each is a command class)
-├── memory/ # Local JSON-based state (reminders, vault entries)
-├── personality/ # Sass library, tone templates, and sarcasm settings
-├── settings.json # User settings (flags, TTS/STT choices, sarcasm level)
-
-
-
----
-
-## ✅ What You Can Help With
-
-As a Codex agent, your job is to:
-
-- Navigate this repo like a pro.
-- Respect `settings.json` and don’t override it unless instructed.
-- Load plugin modules dynamically from `commands/`.
-- Inject sarcasm based on tone settings in `personality/`.
-- Log actions with timestamps (use `core/logger.py` if it exists).
-- Don’t touch the internet unless `settings.json > use_cloud == true`.
-  
-
----
-
-## 🧪 How to Run & Test
-
-To run Lex:
-```bash
-python lexd.py
 ```
-You are expected to test any plugin, dispatcher change, or parser improvement against the following suite.
-Do not make pull requests unless all tests pass.
+LEX/
+├── lexd.py           # The async daemon runner (entry point)
+├── dispatcher.py     # Routes text/voice input to correct plugin
+├── core/             # Logging, config parsing, utility functions
+├── commands/         # Plugin command modules (1 class per file)
+├── memory/           # JSON-based vaults, reminders, and state
+├── personality/      # Response tone templates, sass configs
+├── settings.json     # Master config file, local-only settings
+```
 
-🧠 Notes for Codex
-Use Python 3.11+ syntax
+---
 
-Be async-friendly. Blocking code = instant kick from the project.
+## 🤖 Codex Agent Instructions
 
-Keep all plugin commands under commands/ as <name>.py, each exposing a Command class.
+You are expected to:
+- Read the repo like a **senior developer**
+- Load plugin modules from `commands/`
+- Honor `settings.json` settings at all times
+- NEVER use online APIs unless `use_cloud` is explicitly set true
+- Inject sarcasm **only** if sarcasm is enabled
+- Avoid blocking or sync code in any async loop
+- Use Python 3.11+ and async syntax for all contributions
 
-Plugins should register with a trigger and run() method.
+---
 
-Do not bloat memory or mess with GPU tasks unless explicitly required.
+## 🧪 Review Expectations
 
-🧩 Plugin Schema
-Each file in commands/ should contain:
+When reviewing or generating code:
+- Be **ruthlessly honest**. Don’t sugarcoat broken logic
+- Review like the project ships tomorrow
+- Always prefer clarity and maintainability over clever hacks
 
+Use this structure when giving feedback:
+1. **Code Logic Issues**: List fragile, unclear, or inefficient logic
+2. **UX/Flow Issues**: Confusing flows, bad defaults, annoying usage patterns
+3. **Suggested Fixes**: Concrete changes that improve the above
+4. **Usability Score (0–10)**: Based on logic, structure, and clarity
+
+Example Prompt:
+> "Review `dispatcher.py` like it's going live tomorrow. Tell me what’s bad, unclear, overcomplicated, or fragile. Suggest specific rewrites."
+
+---
+
+## 🧩 Plugin Schema
+
+Each command plugin must:
+```python
 class Command:
-    trigger = ["example", "demo"]  # Trigger keywords
+    trigger = ["example"]
     def __init__(self, context): pass
     async def run(self, args: str) -> str:
-        return "Example response"
-        
-🤖 AI Behavior
-Be helpful, not creepy.
+        return "Handled."
+```
 
-Respect user tone preferences. If sarcasm is OFF, don’t act like a smartass.
-
-If a user asks for reminders, encrypt their data using vault only if use_encryption = true.
-
-Prefer local actions. Open apps, search web, or kill tasks only when told to.
-
-Do not write or push code unless the user gives explicit instruction.
-
-🔐 No Cloud? No Problem.
-Unless settings.json > use_cloud is true, all APIs and TTS/STT engines must:
-
-Use local packages (e.g., pyttsx3 or speech_recognition)
-
-Never call external APIs like ElevenLabs or OpenAI
-
-💀 Final Warning
-Any code that breaks local performance or exposes internet access by default will be terminated with prejudice. This assistant may be sarcastic, but its dev is not playing around.
-
-Built for chaos. Maintained by Lex. Approved by Dyhrrr.
 ---
+
+## 🔐 Security & Local Behavior
+- Do not call external APIs unless `use_cloud` is set
+- Encrypt memory data only if `use_encryption = true`
+- Do not increase GPU load unless explicitly asked
+
+---
+
+## 🛑 Final Rule
+Any code that breaks performance, overrides user settings, or assumes cloud access **will be rejected**. This assistant is meant to work **locally, efficiently, and under the user’s full control.**
+
+That includes you.
+
+Built for creators. Protected by Lex. Approved by Dyhrrr.
