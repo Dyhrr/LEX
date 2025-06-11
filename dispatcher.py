@@ -4,6 +4,9 @@ import os
 import pkgutil
 import sys
 from typing import List
+import difflib
+
+from core.context import LexContext
 
 import asyncio
 
@@ -15,9 +18,12 @@ logger = get_logger()
 class Dispatcher:
     def __init__(self, context: dict | None = None, package: str = "commands"):
         self.package = package
-        self.context = context or {}
+        self.context = LexContext(context)
+        # maintain legacy top-level keys
         self.context["dispatcher"] = self
         self.context.setdefault("history", [])
+        settings = self.context.get("settings", {})
+        self.timeout = float(settings.get("plugin_timeout", 5.0) or 5.0)
         self.commands: List[object] = []
         self.trigger_map: dict[str, object] = {}
         self.module_mtimes: dict[str, float] = {}
@@ -51,6 +57,17 @@ class Dispatcher:
         while True:
             await asyncio.sleep(interval)
             self.check_for_updates()
+
+    async def _safe_execute(self, cmd: object, args: str) -> str:
+        """Execute a command with sandboxing and exception handling."""
+        try:
+            return await asyncio.wait_for(cmd.run(args), timeout=self.timeout)
+        except asyncio.TimeoutError:
+            logger.warning("%s timed out", cmd.__class__.__name__)
+            return "[Lex] Command timed out."
+        except Exception:
+            logger.exception("Error in %s", cmd.__class__.__name__)
+            return "[Lex] Something went wrong."
 
     def load_modules(self) -> None:
         self.commands.clear()
@@ -93,19 +110,20 @@ class Dispatcher:
         for trig, cmd in self.trigger_map.items():
             if lowered.startswith(trig):
                 args = text[len(trig):].strip()
-                try:
-                    result = await cmd.run(args)
-                    self.context["last_command"] = trig
-                    self.context["last_result"] = result
-                    history = self.context.get("history")
-                    if isinstance(history, list):
-                        history.append((input_text, result))
-                        if len(history) > 20:
-                            del history[:-20]
-                    return result
-                except Exception as e:
-                    logger.exception("Error in %s", cmd.__class__.__name__)
-                    return "[Lex] Something went wrong."
+                result = await self._safe_execute(cmd, args)
+                self.context["last_command"] = trig
+                self.context["last_result"] = result
+                history = self.context.get("history")
+                if isinstance(history, list):
+                    history.append((input_text, result))
+                    if len(history) > 20:
+                        del history[:-20]
+                return result
+
+        first = text.split()[0].lower() if text else ""
+        matches = difflib.get_close_matches(first, self.trigger_map.keys(), n=1, cutoff=0.6)
+        if matches:
+            return f"[Lex] Unknown command. Did you mean: {matches[0]}?"
 
         return "[Lex] I don't know what you want, and I'm too tired to guess."
 
