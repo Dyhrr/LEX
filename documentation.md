@@ -45,6 +45,6 @@ implementation.
 
 ## Textual UI
 
-Launch `textual_ui.py` for a simple text-based interface. Use the optional
+Launch `lexui.py` for a simple text-based interface. Use the optional
 `--sidebar` flag to list available command triggers in a side panel.
 
