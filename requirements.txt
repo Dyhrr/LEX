@@ -12,3 +12,4 @@ psutil
 keyboard
 # simpleaudio
 textual
+python-dotenv

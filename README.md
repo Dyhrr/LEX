@@ -20,13 +20,18 @@ Lex targets **Python 3.11+**. Once you have the correct version installed:
 
 ### ElevenLabs TTS (optional)
 Lex can speak using the local `pyttsx3` engine or stream audio from ElevenLabs.
-To enable cloud-based text-to-speech, set `use_cloud` to `true` and configure your credentials in `settings.json`:
+To enable cloud-based text-to-speech, set `use_cloud` to `true` and store your credentials in environment variables (see `.env.example`):
 
 ```json
 "use_cloud": true,
-"tts_engine": "elevenlabs",
-"elevenlabs_api_key": "YOUR_KEY",
-"elevenlabs_voice_id": "VOICE_ID"
+"tts_engine": "elevenlabs"
+```
+
+Environment variables:
+
+```bash
+ELEVENLABS_API_KEY=YOUR_KEY
+ELEVENLABS_VOICE_ID=VOICE_ID
 ```
 
 Lex will then stream and play back voice responses from ElevenLabs.

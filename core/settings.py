@@ -1,6 +1,7 @@
 import json
 import os
 from .logger import get_logger
+from dotenv import load_dotenv
 
 DEFAULTS = {
     "sarcasm_level": 5,
@@ -22,7 +23,11 @@ logger = get_logger()
 
 def load_settings(path: str = "settings.json") -> dict:
     """Load settings from a JSON file, merging with defaults."""
+    # Load environment variables from a local .env file if present
+    load_dotenv(override=False)
+
     data = DEFAULTS.copy()
+
     if os.path.exists(path):
         try:
             with open(path, "r", encoding="utf-8") as fh:
@@ -31,4 +36,14 @@ def load_settings(path: str = "settings.json") -> dict:
                 data.update(file_data)
         except Exception as e:
             logger.error("ERROR loading settings: %s", e)
+
+    # Override sensitive values from environment variables when available
+    env_map = {
+        "elevenlabs_api_key": os.getenv("ELEVENLABS_API_KEY"),
+        "elevenlabs_voice_id": os.getenv("ELEVENLABS_VOICE_ID"),
+    }
+    for key, value in env_map.items():
+        if value:
+            data[key] = value
+
     return data

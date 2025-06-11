@@ -18,6 +18,7 @@ implementation.
 | help.py | `help` | List all available command triggers. |
 | history.py | `history`, `context` | Show recent command history and results. |
 | info.py | `info` | Display loaded commands and current settings. |
+| doctor.py | `doctor` | Run diagnostics to check your Lex setup. |
 | knowledge.py | `knowledge` | Search local documentation for matching lines. |
 | learn.py | `learn`, `teach` | Teach Lex new phrases that map to commands. |
 | notes.py | `notes`, `note` | Store short notes locally. |
