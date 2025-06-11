@@ -4,13 +4,13 @@
 
 ## 🔥 Critical (Breaks UX or Causes Crashes)
 
-- [ ] Add exception handling to all `Command.run()` calls  
+- [x] Add exception handling to all `Command.run()` calls
       → Prevent whole-system crash when a plugin explodes
 
-- [ ] Implement plugin sandboxing  
+- [x] Implement plugin sandboxing
       → Timeout or fallback if a plugin stalls or fails
 
-- [ ] Harden dangerous commands (e.g. `kill`)  
+- [x] Harden dangerous commands (e.g. `kill`)
       → Add opt-in flags or explicit confirmations via settings
 
 - [ ] Improve `context` structure  
@@ -49,7 +49,7 @@
 - [ ] Local command usage logging + frequency analytics  
       → View most-used plugins and drop unused ones
 
-- [ ] Add dynamic personality loading  
+- [x] Add dynamic personality loading
       → Load `/personality/*.json` at runtime (switch tone mid-session)
 
 ---

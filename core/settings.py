@@ -15,6 +15,8 @@ DEFAULTS = {
     "elevenlabs_api_key": "",
     "elevenlabs_voice_id": "",
     "fuzzy_threshold": 0.75,
+    "plugin_timeout": 5.0,
+    "allow_process_terminate": False,
 }
 
 
