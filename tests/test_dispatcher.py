@@ -102,6 +102,7 @@ async def test_command_timeout(monkeypatch):
     result = await dispatcher.dispatch("hang")
     assert "timed out" in result.lower()
 
+
 @pytest.mark.asyncio
 async def test_auto_suggest():
     settings = load_settings()
@@ -116,3 +117,4 @@ def test_context_nested():
     ctx = dispatcher.context
     assert "system" in ctx
     assert ctx["settings"] is ctx.system.get("settings")
+

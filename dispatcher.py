@@ -119,13 +119,13 @@ class Dispatcher:
                     if len(history) > 20:
                         del history[:-20]
                 return result
-
         first = text.split()[0].lower() if text else ""
         matches = difflib.get_close_matches(first, self.trigger_map.keys(), n=1, cutoff=0.6)
         if matches:
             return f"[Lex] Unknown command. Did you mean: {matches[0]}?"
 
         return "[Lex] I don't know what you want, and I'm too tired to guess."
+
 
     async def run_command(self, command: str) -> str:
         """Public helper to execute a command string."""
