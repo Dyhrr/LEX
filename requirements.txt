@@ -11,3 +11,4 @@ pyperclip
 psutil
 keyboard
 # simpleaudio
+textual

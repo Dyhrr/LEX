@@ -36,6 +36,15 @@ Audio playback is handled via the `simpleaudio` package for maximum cross-platfo
 ### Voice Input (optional)
 Lex listens using `speech_recognition`. When the Whisper package is installed, it falls back to Whisper for better accuracy. If `use_cloud` is `false`, all recognition happens locally; otherwise you may configure a cloud recognizer in the future.
 
+### Textual UI (optional)
+Run the interactive TUI with:
+
+```bash
+python textual_ui.py
+```
+
+Add `--sidebar` to display available command triggers in a side panel.
+
 ## ✅ What Works Now
 
 ### Functional Core

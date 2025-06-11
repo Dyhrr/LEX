@@ -43,3 +43,8 @@ implementation.
 | hud.py | `hud` | Show a small CPU and memory usage overlay window. |
 | workflow.py | `workflow` | Create and execute multi-step command workflows. |
 
+## Textual UI
+
+Launch `textual_ui.py` for a simple text-based interface. Use the optional
+`--sidebar` flag to list available command triggers in a side panel.
+
