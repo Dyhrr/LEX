@@ -83,7 +83,11 @@ class Dispatcher:
         """Route the given text to the appropriate command."""
         # normalize_input uses difflib.get_close_matches under the hood for
         # fuzzy trigger substitution when the user mistypes a command
-        text = normalize_input(input_text, self.trigger_map.keys())
+        settings = self.context.get("settings", {})
+        cutoff = float(settings.get("fuzzy_threshold", 0.75) or 0)
+        if cutoff <= 0 or cutoff > 1:
+            cutoff = 1.0
+        text = normalize_input(input_text, self.trigger_map.keys(), cutoff=cutoff)
         lowered = text.lower()
 
         for trig, cmd in self.trigger_map.items():

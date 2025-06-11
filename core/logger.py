@@ -26,3 +26,12 @@ def get_logger(name: str = "Lex") -> logging.Logger:
     logger.addHandler(stream_handler)
 
     return logger
+
+
+def set_log_level(level: int) -> None:
+    """Update the log level for the default logger and all handlers."""
+    logger = logging.getLogger("Lex")
+    logger.setLevel(level)
+    for handler in logger.handlers:
+        handler.setLevel(level)
+

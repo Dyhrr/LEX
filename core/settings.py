@@ -13,6 +13,7 @@ DEFAULTS = {
     "voice_pitch": 50,
     "elevenlabs_api_key": "",
     "elevenlabs_voice_id": "",
+    "fuzzy_threshold": 0.75,
 }
 
 
@@ -20,11 +21,14 @@ logger = get_logger()
 
 
 def load_settings(path: str = "settings.json") -> dict:
-    """Load settings from a JSON file, falling back to defaults."""
+    """Load settings from a JSON file, merging with defaults."""
+    data = DEFAULTS.copy()
     if os.path.exists(path):
         try:
             with open(path, "r", encoding="utf-8") as fh:
-                return json.load(fh)
+                file_data = json.load(fh)
+            if isinstance(file_data, dict):
+                data.update(file_data)
         except Exception as e:
             logger.error("ERROR loading settings: %s", e)
-    return DEFAULTS.copy()
+    return data

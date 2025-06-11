@@ -286,7 +286,9 @@ def update_model_on_corrections() -> None:
         _train_model()
 
 
-def normalize_input(text: str, choices: Iterable[str] | None = None) -> str:
+def normalize_input(
+    text: str, choices: Iterable[str] | None = None, cutoff: float = 0.75
+) -> str:
     """Normalize user text into a command using ML, regex and fuzzy matching."""
 
     cleaned = preprocess(text)
@@ -297,7 +299,7 @@ def normalize_input(text: str, choices: Iterable[str] | None = None) -> str:
     if result != cleaned:
         return result
     if choices:
-        match = fuzzy_match(cleaned, choices)
+        match = fuzzy_match(cleaned, choices, cutoff=cutoff)
         if match:
             return match
     return cleaned
