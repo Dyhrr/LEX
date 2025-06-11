@@ -104,3 +104,8 @@ class Dispatcher:
                     return "[Lex] Something went wrong."
 
         return "[Lex] I don't know what you want, and I'm too tired to guess."
+
+    async def run_command(self, command: str) -> str:
+        """Public helper to execute a command string."""
+        self.check_for_updates()
+        return await self.dispatch(command)
