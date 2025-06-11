@@ -8,6 +8,9 @@ from typing import List
 import asyncio
 
 from core.nlp import normalize_input
+import json
+
+USAGE_FILE = os.path.join("memory", "usage.json")
 
 logger = get_logger()
 
@@ -24,6 +27,11 @@ class Dispatcher:
         self.trigger_map: dict[str, object] = {}
         self.module_mtimes: dict[str, float] = {}
         self.package_path = importlib.import_module(self.package).__path__[0]
+
+        # Track command usage counts for analytics
+        self.usage_file = self.context.get("usage_file", USAGE_FILE)
+        self.usage_counts = self._load_usage()
+        self.context["usage_counts"] = self.usage_counts
 
         self.load_modules()
 
@@ -53,6 +61,23 @@ class Dispatcher:
         while True:
             await asyncio.sleep(interval)
             self.check_for_updates()
+
+    def _load_usage(self) -> dict[str, int]:
+        """Load usage counts from disk."""
+        if os.path.exists(self.usage_file):
+            try:
+                with open(self.usage_file, "r", encoding="utf-8") as fh:
+                    data = json.load(fh)
+                if isinstance(data, dict):
+                    return {k: int(v) for k, v in data.items()}
+            except Exception:
+                pass
+        return {}
+
+    def _save_usage(self) -> None:
+        os.makedirs(os.path.dirname(self.usage_file), exist_ok=True)
+        with open(self.usage_file, "w", encoding="utf-8") as fh:
+            json.dump(self.usage_counts, fh)
 
     async def _safe_execute(self, cmd: object, args: str) -> str:
         """Execute a command with sandboxing and exception handling."""
@@ -114,7 +139,18 @@ class Dispatcher:
                     history.append((input_text, result))
                     if len(history) > 20:
                         del history[:-20]
+                self.usage_counts[trig] = self.usage_counts.get(trig, 0) + 1
+                await asyncio.to_thread(self._save_usage)
                 return result
+
+        from difflib import get_close_matches
+        parts = lowered.split()
+        if parts:
+            suggestions = get_close_matches(
+                parts[0], self.trigger_map.keys(), n=1, cutoff=0.5
+            )
+            if suggestions:
+                return f"[Lex] Unknown command. Did you mean: {suggestions[0]}?"
 
         return "[Lex] I don't know what you want, and I'm too tired to guess."
 

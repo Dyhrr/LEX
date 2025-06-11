@@ -33,7 +33,7 @@
 
 ## 🧪 Testing & Stability
 
-- [ ] Add unit tests for dispatcher routing
+- [x] Add unit tests for dispatcher routing
 - [ ] Write basic test scaffolds for all plugins
 - [ ] Mock voice input / TTS output for CI testing
 - [x] Add `lex doctor` diagnostic command
@@ -43,10 +43,10 @@
 
 ## 🔊 UX & Quality-of-Life
 
-- [ ] Command auto-suggest on unknown triggers  
+- [x] Command auto-suggest on unknown triggers
       → “Did you mean: remind?”
 
-- [ ] Local command usage logging + frequency analytics  
+- [x] Local command usage logging + frequency analytics
       → View most-used plugins and drop unused ones
 
 - [x] Add dynamic personality loading
