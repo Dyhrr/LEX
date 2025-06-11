@@ -13,7 +13,7 @@
 - [x] Harden dangerous commands (e.g. `kill`)
       → Add opt-in flags or explicit confirmations via settings
 
-- [ ] Improve `context` structure  
+- [x] Improve `context` structure
       → Avoid dumping everything into one dict — separate into `system`, `user`, `plugin`
 
 ---
@@ -33,7 +33,7 @@
 
 ## 🧪 Testing & Stability
 
-- [ ] Add unit tests for dispatcher routing
+- [x] Add unit tests for dispatcher routing
 - [ ] Write basic test scaffolds for all plugins
 - [ ] Mock voice input / TTS output for CI testing
 - [x] Add `lex doctor` diagnostic command
@@ -43,7 +43,7 @@
 
 ## 🔊 UX & Quality-of-Life
 
-- [ ] Command auto-suggest on unknown triggers  
+- [x] Command auto-suggest on unknown triggers
       → “Did you mean: remind?”
 
 - [ ] Local command usage logging + frequency analytics  
