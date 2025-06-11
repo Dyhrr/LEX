@@ -35,6 +35,7 @@ implementation.
 | smarthome.py | `smarthome` | Control lights, thermostat, or scenes via Home Assistant. |
 | system.py | `system` | Show basic system information. |
 | tone.py | `tone` | Adjust voice name, rate and pitch. |
+| theme.py | `theme` | Change the Textual UI theme. |
 | tools.py | `tools` | Generate UUIDs or random passwords. |
 | translate.py | `translate` | Translate text using a small offline dictionary or cloud API. |
 | usage.py | `usage` | Show command usage statistics. |

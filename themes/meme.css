@@ -1,0 +1,15 @@
+/* Meme insanity theme */
+Screen {
+    background: yellow;
+    color: red;
+}
+#sidebar {
+    border: heavy magenta;
+}
+Header, Footer {
+    background: lime;
+    color: blue;
+}
+#version {
+    color: hotpink;
+}

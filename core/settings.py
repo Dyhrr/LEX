@@ -17,6 +17,7 @@ DEFAULTS = {
     "fuzzy_threshold": 0.75,
     "plugin_timeout": 5.0,
     "allow_process_terminate": False,
+    "theme": "lex",
 }
 
 
@@ -49,3 +50,12 @@ def load_settings(path: str = "settings.json") -> dict:
             data[key] = value
 
     return data
+
+
+def save_settings(data: dict, path: str = "settings.json") -> None:
+    """Write settings to disk."""
+    try:
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(data, fh, indent=2)
+    except Exception as e:
+        logger.error("ERROR saving settings: %s", e)
