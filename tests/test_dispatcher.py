@@ -101,3 +101,20 @@ async def test_command_timeout(monkeypatch):
 
     result = await dispatcher.dispatch("hang")
     assert "timed out" in result.lower()
+
+
+@pytest.mark.asyncio
+async def test_auto_suggest():
+    settings = load_settings()
+    settings["fuzzy_threshold"] = 1.0
+    dispatcher = Dispatcher({"settings": settings})
+    result = await dispatcher.dispatch("pimg")
+    assert "did you mean" in result.lower()
+
+
+def test_context_nested():
+    dispatcher = Dispatcher({"settings": load_settings()})
+    ctx = dispatcher.context
+    assert "system" in ctx
+    assert ctx["settings"] is ctx.system.get("settings")
+
