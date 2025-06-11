@@ -1,12 +1,14 @@
 # Main daemon entry
 
 import asyncio
+import argparse
+import logging
 from core.settings import load_settings
 from core.security import require_vault_key
 from dispatcher import Dispatcher
 from voice.recognizer import transcribe
 from voice.tts import TTS
-from core.logger import get_logger
+from core.logger import get_logger, set_log_level
 
 
 logger = get_logger()
@@ -42,6 +44,16 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Lex daemon")
+    parser.add_argument("--verbose", action="store_true", help="Enable debug logging")
+    parser.add_argument("--quiet", action="store_true", help="Only show warnings")
+    args = parser.parse_args()
+
+    if args.verbose:
+        set_log_level(logging.DEBUG)
+    elif args.quiet:
+        set_log_level(logging.WARNING)
+
     try:
         asyncio.run(main())
     except KeyboardInterrupt:

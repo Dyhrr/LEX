@@ -44,6 +44,8 @@ python lexui.py
 ```
 
 Add `--sidebar` to display available command triggers in a side panel.
+Use `--verbose` or `--quiet` with either `lexd.py` or `lexui.py` to adjust the
+logging level without editing `settings.json`.
 
 ## ✅ What Works Now
 
@@ -54,6 +56,7 @@ Add `--sidebar` to display available command triggers in a side panel.
 - ✅ Encrypted passphrase-protected vault (Fernet-encrypted `memory/vault.json` with PBKDF2-derived key)
 - ✅ Fully offline functionality (API access only when allowed)
 - ✅ Fuzzy matching and natural phrase interpretation
+  (tune the behaviour with `fuzzy_threshold` in `settings.json`)
 - ✅ Optional voice input + TTS output
 
 ### Supported Commands
@@ -128,6 +131,7 @@ Plugins are expected to be well-behaved: only whitelisted process names may be t
 
 ## 🧪 Testing
 Run the test suite with `pytest tests/` to validate plugins and the dispatcher. New commands should include corresponding tests in `tests/`.
+Run `python scripts/plugin_linter.py` to verify that all plugins declare required metadata.
 
 ## 🔒 License
 MIT. No telemetry, no data collection, no analytics. Just you and your system.

@@ -2,6 +2,7 @@
 
 import asyncio
 import argparse
+import logging
 
 from textual.app import App, ComposeResult
 from textual.containers import Container
@@ -11,6 +12,7 @@ from textual.widgets import Input, Log, Static, Header, Footer
 from core.settings import load_settings
 from core.security import require_vault_key
 from dispatcher import Dispatcher
+from core.logger import set_log_level
 
 LEX_VERSION = "0.1.0"
 
@@ -119,5 +121,13 @@ if __name__ == "__main__":
         action="store_true",
         help="Show available command triggers",
     )
+    parser.add_argument("--verbose", action="store_true", help="Enable debug logging")
+    parser.add_argument("--quiet", action="store_true", help="Only show warnings")
     args = parser.parse_args()
+
+    if args.verbose:
+        set_log_level(logging.DEBUG)
+    elif args.quiet:
+        set_log_level(logging.WARNING)
+
     asyncio.run(main(sidebar=args.sidebar))

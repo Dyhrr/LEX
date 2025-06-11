@@ -16,4 +16,4 @@ class Command:
             resp = await asyncio.to_thread(requests.get, url, timeout=5)
             return resp.text.strip()
         except Exception as e:
-            return f"[Lex] Couldn't fetch weather: {e}"
+            return f"[Lex] Couldn't fetch weather for {location}: {e}"

@@ -18,9 +18,7 @@ Add user confirmation step or require explicit opt-in in settings.json
 Avoid junk-drawer context usage — use sub-dicts (system, user, plugin)
 
 🧠 Architecture Improvements
- Convert fuzzy matching logic into user-configurable threshold
 
-Set threshold or disable fuzzy matching via settings.json
 
  Refactor dispatcher to include Command.help() support
 
@@ -48,9 +46,7 @@ Allow fixed mode selection instead of weird fallbacks
 
 “Did you mean: 'remind'?”
 
- Add --verbose and --quiet CLI flags
 
-Toggle logging level without editing config
 
  Command usage logging + analytics (local only)
 
@@ -70,7 +66,6 @@ Switch tone/response style mid-run
  Routine learning (simple habit memory)
 
 🧾 Housekeeping
- Add plugin metadata linter (Command.trigger, Command.description)
 
  Add .env.example and better key loading (avoid hardcoding ElevenLabs keys in settings.json)
 
