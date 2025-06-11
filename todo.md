@@ -4,16 +4,16 @@
 
 ## 🔥 Critical (Breaks UX or Causes Crashes)
 
-- [ ] Add exception handling to all `Command.run()` calls  
+- [x] Add exception handling to all `Command.run()` calls
       → Prevent whole-system crash when a plugin explodes
 
-- [ ] Implement plugin sandboxing  
+- [x] Implement plugin sandboxing
       → Timeout or fallback if a plugin stalls or fails
 
-- [ ] Harden dangerous commands (e.g. `kill`)  
+- [x] Harden dangerous commands (e.g. `kill`)
       → Add opt-in flags or explicit confirmations via settings
 
-- [ ] Improve `context` structure  
+- [x] Improve `context` structure
       → Avoid dumping everything into one dict — separate into `system`, `user`, `plugin`
 
 ---
@@ -33,7 +33,7 @@
 
 ## 🧪 Testing & Stability
 
-- [ ] Add unit tests for dispatcher routing
+- [x] Add unit tests for dispatcher routing
 - [ ] Write basic test scaffolds for all plugins
 - [ ] Mock voice input / TTS output for CI testing
 - [x] Add `lex doctor` diagnostic command
@@ -43,13 +43,13 @@
 
 ## 🔊 UX & Quality-of-Life
 
-- [ ] Command auto-suggest on unknown triggers  
+- [x] Command auto-suggest on unknown triggers
       → “Did you mean: remind?”
 
 - [ ] Local command usage logging + frequency analytics  
       → View most-used plugins and drop unused ones
 
-- [ ] Add dynamic personality loading  
+- [x] Add dynamic personality loading
       → Load `/personality/*.json` at runtime (switch tone mid-session)
 
 ---

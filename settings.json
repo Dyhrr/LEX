@@ -8,5 +8,7 @@
   "voice_rate": 150,
   "voice_pitch": 50,
   "elevenlabs_api_key": "",
-  "elevenlabs_voice_id": ""
+  "elevenlabs_voice_id": "",
+  "plugin_timeout": 5.0,
+  "allow_process_terminate": false
 }

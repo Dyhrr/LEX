@@ -24,6 +24,9 @@ class Command:
         await asyncio.sleep(0)
         tokens = args.split()
         if tokens and tokens[0] == "kill" and len(tokens) > 1:
+            settings = self.context.get("settings", {})
+            if not settings.get("allow_process_terminate", False):
+                return "[Lex] Process termination disabled in settings."
             try:
                 pid = int(tokens[1])
                 psutil.Process(pid).terminate()
