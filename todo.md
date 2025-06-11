@@ -36,7 +36,7 @@
 - [ ] Add unit tests for dispatcher routing
 - [ ] Write basic test scaffolds for all plugins
 - [ ] Mock voice input / TTS output for CI testing
-- [ ] Add `lex doctor` diagnostic command  
+- [x] Add `lex doctor` diagnostic command
       → Check for missing deps, bad config, incompatible Python, etc.
 
 ---
@@ -65,7 +65,7 @@
 
 ## 🧾 Housekeeping / Dev Quality
 
-- [ ] Add `.env.example` + load secrets from env properly  
+- [x] Add `.env.example` + load secrets from env properly
       → Avoid leaking ElevenLabs keys in `settings.json`
 
 - [ ] Document each plugin:
