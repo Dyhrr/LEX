@@ -10,6 +10,8 @@ class Command:
     async def run(self, args: str) -> str:
         """Get or set sarcasm level."""
         settings = self.context.get("settings", {})
+        from personality import responder
+        responder.reload_responses()
         arg = args.strip()
         await asyncio.sleep(0)
 

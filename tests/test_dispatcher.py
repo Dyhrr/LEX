@@ -1,4 +1,5 @@
 import pytest
+import asyncio
 
 from core.settings import load_settings
 from dispatcher import Dispatcher
@@ -79,3 +80,24 @@ async def test_nlp_fuzzy_match(tmp_path):
     # Intentionally misspelled command
     resp = await dispatcher.dispatch("remmind me to sleep")
     assert "Reminder saved" in resp
+
+
+@pytest.mark.asyncio
+async def test_command_timeout(monkeypatch):
+    settings = load_settings()
+    settings["plugin_timeout"] = 0.1
+    dispatcher = Dispatcher({"settings": settings})
+
+    class Dummy:
+        trigger = ["hang"]
+
+        async def run(self, _args):
+            await asyncio.sleep(1)
+            return "done"
+
+    dummy = Dummy()
+    dispatcher.commands.append(dummy)
+    dispatcher.trigger_map["hang"] = dummy
+
+    result = await dispatcher.dispatch("hang")
+    assert "timed out" in result.lower()
