@@ -1,3 +1,5 @@
+"""Generate UUIDs or random passwords."""
+
 import asyncio
 import secrets
 import string
@@ -5,6 +7,7 @@ import uuid
 
 
 class Command:
+    description = "Generate UUIDs or random passwords."
     trigger = ["tools"]
 
     def __init__(self, context):

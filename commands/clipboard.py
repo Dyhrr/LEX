@@ -1,3 +1,5 @@
+"""Maintain a simple clipboard history (add, show, paste, clear)."""
+
 import asyncio
 import json
 import os
@@ -9,6 +11,7 @@ HISTORY_FILE = Path("memory") / "clipboard.json"
 
 
 class Command:
+    description = "Maintain a simple clipboard history (add, show, paste, clear)."
     """Maintain a simple clipboard history."""
 
     trigger = ["clipboard"]

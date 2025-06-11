@@ -1,3 +1,5 @@
+"""Create and execute multi-step command workflows."""
+
 import asyncio
 import json
 import os
@@ -8,6 +10,7 @@ WORKFLOW_FILE = Path("memory") / "workflows.json"
 
 
 class Command:
+    description = "Create and execute multi-step command workflows."
     """Create and run simple multi-step workflows."""
 
     trigger = ["workflow"]

@@ -1,3 +1,5 @@
+"""Store or retrieve key/value pairs, optionally encrypted."""
+
 import asyncio
 import json
 import os
@@ -7,6 +9,7 @@ VAULT_FILE = os.path.join("memory", "vault.json")
 
 
 class Command:
+    description = "Store or retrieve key/value pairs, optionally encrypted."
     trigger = ["vault"]
 
     def __init__(self, context):

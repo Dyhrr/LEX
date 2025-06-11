@@ -1,3 +1,5 @@
+"""Search files from a local index."""
+
 import asyncio
 import json
 import os
@@ -7,6 +9,7 @@ INDEX_FILE = Path("memory") / "file_index.json"
 
 
 class Command:
+    description = "Search files from a local index."
     """Search files from a simple local index."""
 
     trigger = ["search", "find", "locate"]

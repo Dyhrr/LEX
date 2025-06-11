@@ -20,6 +20,7 @@ SNIPPETS: dict[str, str] = {
 
 
 class Command:
+    description = "Return handy Python code snippets for common tasks."
     """Return small code snippets for common tasks."""
 
     trigger = ["codeassist"]

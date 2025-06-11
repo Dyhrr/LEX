@@ -1,7 +1,10 @@
+"""Adjust voice name, rate and pitch."""
+
 import asyncio
 
 
 class Command:
+    description = "Adjust voice name, rate and pitch."
     """Adjust voice output settings like rate and pitch."""
 
     trigger = ["tone"]

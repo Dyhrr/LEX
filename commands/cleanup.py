@@ -1,3 +1,5 @@
+"""Remove `.tmp` files or clear Python caches."""
+
 import asyncio
 import os
 import shutil
@@ -5,6 +7,7 @@ from pathlib import Path
 
 
 class Command:
+    description = "Remove `.tmp` files or clear Python caches."
     """Simple disk cleanup utilities."""
 
     trigger = ["cleanup"]

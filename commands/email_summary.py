@@ -12,6 +12,7 @@ EMAIL_FILE = Path("memory") / "emails.json"
 
 
 class Command:
+    description = "Summarize unread emails from a local mailbox."
     """Provide quick summaries of unread emails."""
 
     trigger = ["email_summary"]

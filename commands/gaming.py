@@ -1,8 +1,11 @@
+"""Roll dice or flip a coin."""
+
 import asyncio
 import random
 
 
 class Command:
+    description = "Roll dice or flip a coin."
     trigger = ["game", "gaming"]
 
     def __init__(self, context):

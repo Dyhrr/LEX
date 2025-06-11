@@ -1,3 +1,5 @@
+"""Register global hotkeys that trigger Lex commands."""
+
 import asyncio
 import json
 import os
@@ -8,6 +10,7 @@ HOTKEY_FILE = Path("memory") / "hotkeys.json"
 
 
 class Command:
+    description = "Register global hotkeys that trigger Lex commands."
     """Register and manage global hotkeys."""
 
     trigger = ["hotkey"]

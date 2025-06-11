@@ -1,8 +1,11 @@
+"""Teach Lex new phrases that map to commands."""
+
 import asyncio
 from core import nlp
 
 
 class Command:
+    description = "Teach Lex new phrases that map to commands."
     trigger = ["learn", "teach"]
 
     def __init__(self, context):

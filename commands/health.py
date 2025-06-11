@@ -1,9 +1,12 @@
+"""Report basic CPU, RAM and disk usage."""
+
 import asyncio
 
 import psutil
 
 
 class Command:
+    description = "Report basic CPU, RAM and disk usage."
     """Report basic system health."""
 
     trigger = ["health", "stats"]

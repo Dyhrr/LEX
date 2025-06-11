@@ -1,4 +1,7 @@
+"""Respond with a simple \"Pong\" message."""
+
 class Command:
+    description = 'Respond with a simple "Pong" message.'
     trigger = ["ping", "are you alive"]
 
     def __init__(self, context):

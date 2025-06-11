@@ -1,4 +1,7 @@
+"""Look up word definitions using a web API when cloud access is allowed."""
+
 class Command:
+    description = "Look up word definitions using a web API when cloud access is allowed."
     trigger = ["define"]
 
     def __init__(self, context):

@@ -1,3 +1,5 @@
+"""List potential new features from a JSON suggestions file."""
+
 import asyncio
 import json
 from pathlib import Path
@@ -6,6 +8,7 @@ SUGGESTIONS_FILE = Path("data") / "feature_suggestions.json"
 
 
 class Command:
+    description = "List potential new features from a JSON suggestions file."
     """List potential new features from the suggestions file."""
 
     trigger = ["features", "missing features", "feature suggestions"]

@@ -1,3 +1,5 @@
+"""Manage dated events in a small local schedule."""
+
 import asyncio
 import json
 from pathlib import Path
@@ -8,6 +10,7 @@ SCHEDULE_FILE = Path("memory") / "schedule.json"
 
 
 class Command:
+    description = "Manage dated events in a small local schedule."
     """Manage a very small local schedule of dated notes."""
 
     trigger = ["schedule"]
