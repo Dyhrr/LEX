@@ -1,0 +1,15 @@
+/* Default Lex dark theme */
+Screen {
+    background: #101010;
+    color: #e0e0e0;
+}
+#sidebar {
+    border: heavy #36d6c5;
+}
+Header, Footer {
+    background: #181818;
+    color: #36d6c5;
+}
+#version {
+    color: #ff66ff;
+}
