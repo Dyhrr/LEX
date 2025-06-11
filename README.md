@@ -40,7 +40,7 @@ Lex listens using `speech_recognition`. When the Whisper package is installed, i
 Run the interactive TUI with:
 
 ```bash
-python textual_ui.py
+python lexui.py
 ```
 
 Add `--sidebar` to display available command triggers in a side panel.
