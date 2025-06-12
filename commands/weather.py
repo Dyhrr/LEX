@@ -14,6 +14,9 @@ class Command:
         url = f"https://wttr.in/{location}?format=3"
         try:
             resp = await asyncio.to_thread(requests.get, url, timeout=5)
-            return resp.text.strip()
+            text = resp.text.strip()
+            if "Unknown location" in text:
+                return f"[Lex] No forecast for {location}."
+            return text
         except Exception as e:
             return f"[Lex] Couldn't fetch weather for {location}: {e}"

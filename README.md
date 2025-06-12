@@ -52,6 +52,17 @@ Add `--sidebar` to display available command triggers in a side panel.
 Use `--verbose` or `--quiet` with either `lexd.py` or `lexui.py` to adjust the
 logging level without editing `settings.json`.
 
+### Tkinter GUI (optional)
+Run the lightweight GUI with:
+
+```bash
+python lex_gui.py
+```
+
+This windowed mode shares the same dispatcher as `lexui.py` but uses Tkinter.
+You can also pass `--verbose` or `--quiet` flags.
+
+
 ## ✅ What Works Now
 
 ### Functional Core
