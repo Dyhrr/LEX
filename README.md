@@ -52,6 +52,17 @@ Add `--sidebar` to display available command triggers in a side panel.
 Use `--verbose` or `--quiet` with either `lexd.py` or `lexui.py` to adjust the
 logging level without editing `settings.json`.
 
+### Graphical UI (optional)
+Run a simple PySide6 GUI with:
+
+```bash
+python lexgui.py
+```
+
+The GUI mirrors the TUI features with a basic text box and input field. Use
+`--verbose` or `--quiet` to change the logging level just like the other entry
+points.
+
 ## ✅ What Works Now
 
 ### Functional Core

@@ -13,3 +13,4 @@ keyboard
 # simpleaudio
 textual
 python-dotenv
+PySide6
