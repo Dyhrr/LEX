@@ -1,5 +1,6 @@
 import argparse
 import asyncio
+import atexit
 import logging
 import sys
 import threading
@@ -11,6 +12,20 @@ from core.settings import load_settings
 from core.security import require_vault_key
 from dispatcher import Dispatcher
 from core.logger import set_log_level
+
+
+# Create a persistent asyncio event loop running in a background thread.
+event_loop = asyncio.new_event_loop()
+asyncio.set_event_loop(event_loop)
+threading.Thread(target=event_loop.run_forever, daemon=True).start()
+
+
+def _shutdown_loop() -> None:
+    """Stop the background event loop."""
+    event_loop.call_soon_threadsafe(event_loop.stop)
+
+
+atexit.register(_shutdown_loop)
 
 
 class LexWindow(QWidget):
@@ -32,7 +47,14 @@ class LexWindow(QWidget):
         layout.addWidget(self.input)
 
         self.input.returnPressed.connect(self.submit)
-        self.result_ready.connect(self.log.append)
+        self.result_ready.connect(self.append_log)
+
+    @Slot(str)
+    def append_log(self, message: str) -> None:
+        """Append a line to the log and scroll to the end."""
+        self.log.append(message.strip())
+        bar = self.log.verticalScrollBar()
+        bar.setValue(bar.maximum())
 
     @Slot()
     def submit(self) -> None:
@@ -44,11 +66,14 @@ class LexWindow(QWidget):
         threading.Thread(target=self._execute, args=(text,), daemon=True).start()
 
     def _execute(self, text: str) -> None:
+        future = asyncio.run_coroutine_threadsafe(
+            self.dispatcher.run_command(text), event_loop
+        )
         try:
-            result = asyncio.run(self.dispatcher.run_command(text))
+            result = future.result()
         except Exception as e:
             result = f"[ERROR] {e}"
-        self.result_ready.emit(result)
+        self.result_ready.emit(result.strip())
 
 
 def main() -> None:
@@ -61,6 +86,7 @@ def main() -> None:
     window.resize(600, 400)
     window.show()
     app.exec()
+    event_loop.call_soon_threadsafe(event_loop.stop)
 
 
 if __name__ == "__main__":
